@@ -1,0 +1,61 @@
+//
+//  ActivitySet.swift
+//  IntervalStopwatch
+//
+//  Created by Alun King on 24/02/2025.
+//
+import SwiftData
+import Foundation
+
+@Model
+class ActivitySet:ObservableObject{
+    var name:String
+    var activitySetDescription:String
+    var reps:Int8
+    //var hasAutoRest:Bool
+    //var autoRestDuration:Int
+    @Transient var formattedDuration:String = ""
+    @Transient var formattedRepDuration:String = ""
+    @Transient var duration:Int = 0{didSet{
+        //update the formattedDuration
+        formattedDuration = Workout.formatDuration(forDuration:duration)
+    }
+    }
+    @Relationship var activities:[Activity]{didSet{
+        calculateTotalDuration()
+    }}
+    
+    init(name: String = "Workout Set",
+         activitySetDescription: String = "",
+         reps: Int8 = 1,
+         //hasAutoRest:Bool = false,
+         //autoRestDuration:Int = 0,
+         activities: [Activity] = []
+    ) {
+        self.name = name
+        self.activitySetDescription = activitySetDescription
+        self.reps = reps
+        self.activities = activities
+        //self.hasAutoRest = hasAutoRest
+        //self.autoRestDuration = autoRestDuration
+        calculateTotalDuration()
+    }
+    
+    @Transient private func calculateTotalDuration() {
+            var totalDuration = 0
+            for activity in activities {
+                totalDuration += activity.duration
+                /*if hasAutoRest{
+                    totalDuration += autoRestDuration
+                }*/
+            }
+        //before we complete the total, save the pre-rep duration
+        formattedRepDuration = Workout.formatDuration(forDuration: totalDuration)
+        duration = totalDuration * Int(reps)
+        }
+
+    
+    
+    
+}
+

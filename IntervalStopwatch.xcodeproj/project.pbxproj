@@ -39,6 +39,18 @@
 		5DA562D42D6C7DF3007A6BA0 /* IntervalStopwatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IntervalStopwatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5DA563062D6C9A5C007A6BA0 /* Exceptions for "Models" folder in "IntervalStopwatch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Activity.swift,
+				ActivitySet.swift,
+				Workout.swift,
+			);
+			target = 5DA562D32D6C7DF3007A6BA0 /* IntervalStopwatch Watch App */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5DA562C62D6C7DF1007A6BA0 /* IntervalStopwatch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -48,6 +60,14 @@
 		5DA562D82D6C7DF3007A6BA0 /* IntervalStopwatch Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "IntervalStopwatch Watch App";
+			sourceTree = "<group>";
+		};
+		5DA562EB2D6C84A8007A6BA0 /* Models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5DA563062D6C9A5C007A6BA0 /* Exceptions for "Models" folder in "IntervalStopwatch Watch App" target */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -73,6 +93,7 @@
 		5DA562BB2D6C7DF1007A6BA0 = {
 			isa = PBXGroup;
 			children = (
+				5DA562EB2D6C84A8007A6BA0 /* Models */,
 				5DA562C62D6C7DF1007A6BA0 /* IntervalStopwatch */,
 				5DA562D82D6C7DF3007A6BA0 /* IntervalStopwatch Watch App */,
 				5DA562C52D6C7DF1007A6BA0 /* Products */,
@@ -107,6 +128,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				5DA562C62D6C7DF1007A6BA0 /* IntervalStopwatch */,
+				5DA562EB2D6C84A8007A6BA0 /* Models */,
 			);
 			name = IntervalStopwatch;
 			packageProductDependencies = (
