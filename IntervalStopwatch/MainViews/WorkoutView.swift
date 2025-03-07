@@ -9,68 +9,90 @@ import SwiftUI
 
 struct WorkoutView: View {
     //basic information
-    @ObservedObject var workout:Workout
-    
-    @State var description:String = ""
+    var workout:Workout
+    //create a blank workout
+    @State private var editingWorkout = Workout(name:"")
+    @State private var isPresentingEditWorkoutView = false
     
     var body: some View {
         NavigationStack{
-            List{
-                Section(header:Text("Overview")){
-                    
-                    
-                    Label(workout.workoutDescription, systemImage:"info.circle")
-                    
-                    Label(" \(workout.formattedDuration)", systemImage:"timer")
-                    
-                }
-                
-                Section(header:Text("Sets")){
-                    /*
-                     * Loop through and display the
-                     * Activity Sets which can be
-                     * clicked and edited
-                     */
-                    ForEach (workout.activitySets){ workoutActivitySet in
-                        ActivitySetListView(activitySet:workoutActivitySet)
+                List{
+                    Section(header:Text("Overview")){
+                        
+                        
+                        Label(workout.workoutDescription, systemImage:"info.circle")
+                        
+                        Label(" \(workout.formattedDuration)", systemImage:"timer")
                         
                     }
-                }
-                Section{
-                    Button("Start Workout", systemImage: "timer"){
-                        //Navigate to workout screen here
+                    
+                    Section(header:Text("Sets")){
+                        /*
+                         * Loop through and display the
+                         * Activity Sets which can be
+                         * clicked and edited
+                         */
+                        
+                        ForEach (workout.activitySets){ workoutActivitySet in
+                            NavigationLink{
+                                ActivitySetView(activitySet:workoutActivitySet)
+                            } label:{
+                                ActivitySetListView(activitySet:workoutActivitySet)
+                            }
+                            
+                        }
+                        
                     }
-                    .font(.headline)
-                    
+                    Section{
+                        if(workout.activitySets.count == 0){
+                            Text("Click edit to add workout sets").font(.subheadline)
+                        }else{
+                            Button("Start Workout", systemImage: "timer"){
+                                //Navigate to workout screen here
+                            }
+                            .font(.headline)
+                        }
+                    }
                     
                     
                 }
-            }.navigationTitle(workout.name)
+                .navigationTitle(workout.name)
+                .toolbar{
+                    ToolbarItem(placement:.confirmationAction){
+                        Button("Edit"){
+                            //we don't want to pass the whole object here
+                            editingWorkout.clone(originalWorkout:workout)
+                            isPresentingEditWorkoutView = true
+                            
+                        }
+                    }
+                }
+                
+            
+            
+            
+        }.sheet(isPresented: $isPresentingEditWorkoutView){
+            NavigationStack{
+                WorkoutEditView(workout:$editingWorkout)
+                    .toolbar{
+                        ToolbarItem(placement:.confirmationAction){
+                            Button("Save"){
+                                isPresentingEditWorkoutView = false
+                                workout.save(editedWorkout:editingWorkout)
+                                
+                            }
+                        }
+                        ToolbarItem(placement:.cancellationAction){
+                            Button("Cancel"){
+                                isPresentingEditWorkoutView = false
+                            }
+                        }
+                    }
+            }
         }
     }
 }
 
 #Preview {
-    WorkoutView(workout:Workout(name:"Example workout", workoutDescription: "Example description of a workout that spans more than one line of text", activitySets: [
-        ActivitySet(
-            name:"Example Set",
-            activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
-            reps:2,
-            activities:[
-                Activity(name:"Push ups", duration:60),
-                Activity(name:"Rest", duration:30),
-                Activity(name:"Sit ups", duration:60),
-                Activity(name:"Rest", duration:30),
-            ]),
-        ActivitySet(
-            name:"Another Set",
-            activitySetDescription:"More description",
-            reps:3,
-            activities:[
-                Activity(name:"Push ups", duration:120),
-                Activity(name:"Rest", duration:60),
-                Activity(name:"Sit ups", duration:120),
-                Activity(name:"Rest", duration:60),
-            ])
-    ]))
+    WorkoutView(workout:Workout.sampleData)
 }

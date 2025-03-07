@@ -27,4 +27,14 @@ class Activity:Identifiable{
         self.duration = duration
         formattedTime = Workout.formatDuration(forDuration: duration)
     }
+    
+    @Transient func clone(originalActivity:Activity){
+        self.name = originalActivity.name
+        self.activityDescription = originalActivity.activityDescription
+        self.duration = originalActivity.duration
+    }
+}
+
+extension Activity{
+    static let sampleData:Activity = Activity(name:"Push ups", duration:60)
 }

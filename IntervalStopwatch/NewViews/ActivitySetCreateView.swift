@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-struct ActivitySetView: View {
+struct ActivitySetCreateView: View {
     @ObservedObject var activitySet:ActivitySet
-    @State private var isPresentingEditActivitySetView = false
     @State var name:String=""
     @State var description:String=""
     @State var reps:Int = 1
@@ -42,24 +41,26 @@ struct ActivitySetView: View {
                     List ($activitySet.activities, id:\.self, editActions:.all){  $activity in
                         ActivityListView(activity: activity)
                     }
-                    if(activitySet.activities.count == 0){
-                        Text("Click edit to add activities").font(.subheadline)
+                    HStack {
+                        TextField("New Activity", text: $newActivityName)
+                        Button(action: {
+                            withAnimation {
+                                let activity = Activity(name: newActivityName, duration:60)
+                                activitySet.activities.append(activity)
+                                newActivityName = ""
+                            }
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                        }
+                        .disabled(newActivityName.isEmpty)
                     }
                 }
                 
-            }.toolbar{
-                ToolbarItem(placement:.confirmationAction){
-                    Button("Edit"){
-                        isPresentingEditActivitySetView = true
-                    }
-                }
             }
-        }.sheet(isPresented: $isPresentingEditActivitySetView){
-            ActivitySetEditView(activitySet:activitySet)
         }
     }
 }
 
 #Preview {
-    ActivitySetView(activitySet:ActivitySet.sampleData)
+    ActivitySetCreateView(activitySet:ActivitySet.sampleData)
 }

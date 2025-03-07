@@ -7,20 +7,25 @@
 
 import SwiftUI
 
-struct ActivityListView: View {
-    var activity:Activity
+struct WorkoutListView: View {
+    var workout:Workout
     
     var body: some View {
         VStack{
             HStack{
-                Text(activity.name)
+                Text(workout.name)
                 Spacer()
                 HStack{
                     Image(systemName:"timer")
-                    Text(activity.formattedTime)
-                } 
+                    Text(workout.formattedDuration)
+                }
+            }.font(.headline)
+            HStack{
+                Text("\(workout.activitySets.count) sets")
+                
+                Spacer()
+                
             }
-            
             //Text("\(activitySet.activitySetDescription)")
             
                 
@@ -33,8 +38,6 @@ struct ActivityListView: View {
 
 
 #Preview(traits: .sizeThatFitsLayout) {
-    ActivityListView(
-        activity:
-            Activity.sampleData
-            )
+    WorkoutListView(
+        workout:Workout.sampleData)
 }

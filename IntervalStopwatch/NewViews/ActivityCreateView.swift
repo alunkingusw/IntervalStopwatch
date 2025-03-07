@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ActivityView: View {
+struct ActivityCreateView: View {
     //basic information
     @State var name:String=""
     @State var description:String=""
@@ -40,17 +40,11 @@ struct ActivityView: View {
                 Section(header:Text("Optional Information")){
                     TextField("Description", text:$description)
                 }
-                Section(header:Text("Re-use previous activity")){
-                    
-                    ScrollView{
-                        
-                    }
-                }
             }
         }
     }
 }
 
 #Preview {
-    ActivityView()
+    ActivityCreateView()
 }

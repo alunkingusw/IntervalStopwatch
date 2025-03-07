@@ -39,14 +39,5 @@ struct ActivitySetListView: View {
 
 #Preview(traits: .sizeThatFitsLayout) {
     ActivitySetListView(
-        activitySet:ActivitySet(
-            name:"Example Set",
-            activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
-            reps:2,
-            activities:[
-                Activity(name:"Push ups", duration:60),
-                Activity(name:"Rest", duration:30),
-                Activity(name:"Sit ups", duration:60),
-                Activity(name:"Rest", duration:30),
-            ]))
+        activitySet:ActivitySet.sampleData)
 }

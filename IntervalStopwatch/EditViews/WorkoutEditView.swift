@@ -9,59 +9,73 @@ import SwiftUI
 
 struct WorkoutEditView: View {
     //basic information
-    @ObservedObject var workout:Workout
-    @State var name:String = ""
-    @State var description:String = ""
+    @Binding var workout:Workout
+    @State private var isShowingDeleteAlert = false
+    @State var newActivitySetName = ""
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        Form{
-            Section(header:Text("Workout")){
-                TextField("Name", text:$name)
-            
-                TextField("Description", text:$description)
-                HStack{
-                    Image(systemName:"timer")
-                    Text(" \(workout.formattedDuration)")
-                }
-                
-            }
-            Section(header:Text("Sets")){
-                /*
-                 * Loop through and display the
-                 * Activity Sets which can be
-                 * clicked and edited
-                 */
-                List (workout.activitySets){ workoutActivitySet in
-                    ActivitySetListView(activitySet:workoutActivitySet)
+        VStack{
+            Form{
+                Section(header:Text("Workout")){
+                    TextField("Name", text:$workout.name)
+                    
+                    TextField("Description", text:$workout.workoutDescription)
+                    HStack{
+                        Image(systemName:"timer")
+                        Text(" \(workout.formattedDuration)")
+                    }
                     
                 }
+                Section(header:Text("Sets - swipe to remove or copy")){
+                    /*
+                     * Loop through and display the
+                     * Activity Sets which can be
+                     * clicked and edited
+                     */
+                    List (workout.activitySets){ workoutActivitySet in
+                        
+                        ActivitySetListView(activitySet:workoutActivitySet)
+                        
+                        
+                    }
+                    HStack {
+                        TextField("New Activity Set", text: $newActivitySetName)
+                        Button(action: {
+                            withAnimation {
+                                let activitySet = ActivitySet(name: newActivitySetName)
+                                workout.activitySets.append(activitySet)
+                                newActivitySetName = ""
+                            }
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                        }
+                        .disabled(newActivitySetName.isEmpty)
+                    }
+                    
+                }
+                
+                
+                
+                
             }
-            
+            Spacer()
+            Button("Delete Workout", role:.destructive){
+                //Navigate to workout screen here
+                isShowingDeleteAlert = true
+            }
+        }.confirmationDialog(
+            Text("This will remove your entire workout!"),
+            isPresented: $isShowingDeleteAlert,
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                
+            }
         }
     }
 }
 
-#Preview {
-    WorkoutEditView(workout:Workout(name:"Example workout", workoutDescription: "Example description of a workout", activitySets: [
-        ActivitySet(
-            name:"Example Set",
-            activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
-            reps:2,
-            activities:[
-                Activity(name:"Push ups", duration:60),
-                Activity(name:"Rest", duration:30),
-                Activity(name:"Sit ups", duration:60),
-                Activity(name:"Rest", duration:30),
-            ]),
-        ActivitySet(
-            name:"Another Set",
-            activitySetDescription:"More description",
-            reps:3,
-            activities:[
-                Activity(name:"Push ups", duration:120),
-                Activity(name:"Rest", duration:60),
-                Activity(name:"Sit ups", duration:120),
-                Activity(name:"Rest", duration:60),
-            ])
-    ]))
-}
+/*#Preview {
+    WorkoutEditView(workout:Workout.sampleData)
+}*/

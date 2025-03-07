@@ -11,24 +11,34 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Query var workouts:[Workout]
+    @State private var isPresentingNewWorkoutView = false
     var body: some View {
         NavigationStack {
             List (workouts){ workout in
-                
-            }.navigationTitle("Workouts").toolbar {
-                Button(
-                    action: addWorkout,
-                    label:{
-                        Image(systemName:"plus")
+                NavigationLink{
+                    WorkoutView(workout:workout)
+                }
+                label:{WorkoutListView(workout:workout)
+                }
+            }.navigationTitle("Workouts")
+                .toolbar {
+                    ToolbarItem(placement:.confirmationAction){
+                        Button(
+                            action: addWorkout,
+                            label:{
+                                Image(systemName:"plus")
+                            }
+                        )
                     }
-                )
             }
+                
+        }.padding()
+        .sheet(isPresented: $isPresentingNewWorkoutView){
+            WorkoutCreateView()
         }
-        .padding()
     }
     func addWorkout() {
-        let newWorkout = Workout()
-        modelContext.insert(newWorkout)
+        isPresentingNewWorkoutView = true
     }
 }
 

@@ -54,8 +54,34 @@ class ActivitySet:ObservableObject{
         duration = totalDuration * Int(reps)
         }
 
+    @Transient func clone(originalActivitySet:ActivitySet){
+        self.name = originalActivitySet.name
+        self.activitySetDescription = originalActivitySet.activitySetDescription
+        self.reps = originalActivitySet.reps
+        for originalActivity in originalActivitySet.activities {
+            let clonedActivity = Activity()
+            clonedActivity.clone(originalActivity: originalActivity)
+            self.activities.append(clonedActivity)
+        }
+        //self.hasAutoRest = hasAutoRest
+        //self.autoRestDuration = autoRestDuration
+        calculateTotalDuration()
+    }
     
     
     
 }
 
+
+extension ActivitySet{
+    static var sampleData:ActivitySet = ActivitySet(
+        name:"Example Set",
+        activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
+        reps:2,
+        activities:[
+            Activity(name:"Push ups", duration:60),
+            Activity(name:"Rest", duration:30),
+            Activity(name:"Sit ups", duration:60),
+            Activity(name:"Rest", duration:30),
+        ])
+}
