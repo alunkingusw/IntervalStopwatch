@@ -9,19 +9,19 @@ import SwiftUI
 
 struct ActivitySetEditView: View {
     @ObservedObject var activitySet:ActivitySet
-    @State var name:String=""
-    @State var description:String=""
-    @State var reps:Int = 1
+    @State private var isShowingDeleteAlert = false
+    @Environment(\.dismiss) var dismiss
+    
     @State var newActivityName = ""
     
     var body: some View {
         NavigationStack{
             Form{
-                Section(header:Text("Activity Set ")){
-                    TextField("Name", text:$name)
+                Section(header:Text("Activity Set")){
+                    TextField("Name", text:$activitySet.name)
                     
-                    TextField("Description", text:$description)
-                    Picker("Reps", selection:$reps){
+                    TextField("Description", text:$activitySet.activitySetDescription)
+                    Picker("Reps", selection:$activitySet.reps){
                         ForEach(1..<31){
                             if $0 > 1{
                                 Text("\($0) reps")

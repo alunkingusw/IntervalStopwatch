@@ -76,6 +76,6 @@ struct WorkoutEditView: View {
     }
 }
 
-/*#Preview {
-    WorkoutEditView(workout:Workout.sampleData)
-}*/
+#Preview {
+    WorkoutEditView(workout:.constant(Workout.sampleData))
+}

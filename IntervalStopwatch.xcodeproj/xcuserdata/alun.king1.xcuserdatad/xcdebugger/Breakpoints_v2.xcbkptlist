@@ -52,5 +52,93 @@
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "57B4EB1E-177E-4F7B-B681-E62CCE98CA5E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "IntervalStopwatch/MainViews/ActivitySetView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "57B4EB1E-177E-4F7B-B681-E62CCE98CA5E - 7be7d7a198f643c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.List&lt;Swift.Never, SwiftUI.ForEach&lt;SwiftUI.IndexedIdentifierCollection&lt;Swift.Array&lt;IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity, SwiftUI.EditableCollectionContent&lt;IntervalStopwatch.ActivityListView, Swift.Array&lt;IntervalStopwatch.Activity&gt;&gt;&gt;&gt;, Swift.Optional&lt;SwiftUI.Text&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Section&lt;SwiftUI.Text, SwiftUI.TupleView&lt;(SwiftUI.TextField&lt;SwiftUI.Text&gt;, SwiftUI.TextField&lt;SwiftUI.Text&gt;, SwiftUI.Picker&lt;SwiftUI.Text, Swift.Int8, SwiftUI.ForEach&lt;Swift.Range&lt;Swift.Int&gt;, Swift.Int, SwiftUI._ConditionalContent&lt;SwiftUI.Text, SwiftUI.Text&gt;&gt;&gt;)&gt;, SwiftUI.EmptyView&gt;, SwiftUI.Section&lt;SwiftUI.Text, SwiftUI.TupleView&lt;(SwiftUI.List&lt;Swift.Never, SwiftUI.ForEach&lt;SwiftUI.IndexedIdentifierCollection&lt;Swift.Array&lt;IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity, SwiftUI.EditableCollectionContent&lt;IntervalStopwatch.ActivityListView, Swift.Array&lt;IntervalStopwatch.Activity&gt;&gt;&gt;&gt;, Swift.Optional&lt;SwiftUI.Text&gt;)&gt;, SwiftUI.EmptyView&gt;)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.toolbar&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ToolbarContent&gt;(content: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in IntervalStopwatch.ActivitySetView.body.getter : some"
+                  moduleName = "IntervalStopwatch.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alun.king1/Documents/iOSProjects/IntervalStopwatch/IntervalStopwatch/MainViews/ActivitySetView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39">
+               </Location>
+               <Location
+                  uuid = "57B4EB1E-177E-4F7B-B681-E62CCE98CA5E - c53beb53dc24b06"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "implicit closure #1 (SwiftUI.Binding&lt;IntervalStopwatch.Activity&gt;) -&gt; IntervalStopwatch.ActivityListView in closure #2 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.List&lt;Swift.Never, SwiftUI.ForEach&lt;SwiftUI.IndexedIdentifierCollection&lt;Swift.Array&lt;IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity, SwiftUI.EditableCollectionContent&lt;IntervalStopwatch.ActivityListView, Swift.Array&lt;IntervalStopwatch.Activity&gt;&gt;&gt;&gt;, Swift.Optional&lt;SwiftUI.Text&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Section&lt;SwiftUI.Text, SwiftUI.TupleView&lt;(SwiftUI.TextField&lt;SwiftUI.Text&gt;, SwiftUI.TextField&lt;SwiftUI.Text&gt;, SwiftUI.Picker&lt;SwiftUI.Text, Swift.Int8, SwiftUI.ForEach&lt;Swift.Range&lt;Swift.Int&gt;, Swift.Int, SwiftUI._ConditionalContent&lt;SwiftUI.Text, SwiftUI.Text&gt;&gt;&gt;)&gt;, SwiftUI.EmptyView&gt;, SwiftUI.Section&lt;SwiftUI.Text, SwiftUI.TupleView&lt;(SwiftUI.List&lt;Swift.Never, SwiftUI.ForEach&lt;SwiftUI.IndexedIdentifierCollection&lt;Swift.Array&lt;IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity, SwiftUI.EditableCollectionContent&lt;IntervalStopwatch.ActivityListView, Swift.Array&lt;IntervalStopwatch.Activity&gt;&gt;&gt;&gt;, Swift.Optional&lt;SwiftUI.Text&gt;)&gt;, SwiftUI.EmptyView&gt;)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.toolbar&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ToolbarContent&gt;(content: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in IntervalStopwatch.ActivitySetView.body.getter : some"
+                  moduleName = "IntervalStopwatch.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alun.king1/Documents/iOSProjects/IntervalStopwatch/IntervalStopwatch/MainViews/ActivitySetView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39">
+               </Location>
+               <Location
+                  uuid = "57B4EB1E-177E-4F7B-B681-E62CCE98CA5E - 4e38cd3ecb3b21c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (SwiftUI.Binding&lt;IntervalStopwatch.Activity&gt;) -&gt; IntervalStopwatch.ActivityListView in implicit closure #1 (SwiftUI.Binding&lt;IntervalStopwatch.Activity&gt;) -&gt; IntervalStopwatch.ActivityListView in closure #2 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.List&lt;Swift.Never, SwiftUI.ForEach&lt;SwiftUI.IndexedIdentifierCollection&lt;Swift.Array&lt;IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity, SwiftUI.EditableCollectionContent&lt;IntervalStopwatch.ActivityListView, Swift.Array&lt;IntervalStopwatch.Activity&gt;&gt;&gt;&gt;, Swift.Optional&lt;SwiftUI.Text&gt;)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.Section&lt;SwiftUI.Text, SwiftUI.TupleView&lt;(SwiftUI.TextField&lt;SwiftUI.Text&gt;, SwiftUI.TextField&lt;SwiftUI.Text&gt;, SwiftUI.Picker&lt;SwiftUI.Text, Swift.Int8, SwiftUI.ForEach&lt;Swift.Range&lt;Swift.Int&gt;, Swift.Int, SwiftUI._ConditionalContent&lt;SwiftUI.Text, SwiftUI.Text&gt;&gt;&gt;)&gt;, SwiftUI.EmptyView&gt;, SwiftUI.Section&lt;SwiftUI.Text, SwiftUI.TupleView&lt;(SwiftUI.List&lt;Swift.Never, SwiftUI.ForEach&lt;SwiftUI.IndexedIdentifierCollection&lt;Swift.Array&lt;IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity&gt;, IntervalStopwatch.Activity, SwiftUI.EditableCollectionContent&lt;IntervalStopwatch.ActivityListView, Swift.Array&lt;IntervalStopwatch.Activity&gt;&gt;&gt;&gt;, Swift.Optional&lt;SwiftUI.Text&gt;)&gt;, SwiftUI.EmptyView&gt;)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.toolbar&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ToolbarContent&gt;(content: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in IntervalStopwatch.ActivitySetView.body.getter : some"
+                  moduleName = "IntervalStopwatch.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alun.king1/Documents/iOSProjects/IntervalStopwatch/IntervalStopwatch/MainViews/ActivitySetView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "40"
+                  endingLineNumber = "40">
+               </Location>
+               <Location
+                  uuid = "57B4EB1E-177E-4F7B-B681-E62CCE98CA5E - b1b0cf1dcbd8ed17"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper init from projected value of $activity : SwiftUI.Binding&lt;IntervalStopwatch.Activity&gt;"
+                  moduleName = "IntervalStopwatch.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alun.king1/Documents/iOSProjects/IntervalStopwatch/IntervalStopwatch/MainViews/ActivitySetView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "57B4EB1E-177E-4F7B-B681-E62CCE98CA5E - 9a18f86f994f1dae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "activity.getter : IntervalStopwatch.Activity"
+                  moduleName = "IntervalStopwatch.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alun.king1/Documents/iOSProjects/IntervalStopwatch/IntervalStopwatch/MainViews/ActivitySetView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

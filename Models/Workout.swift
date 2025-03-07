@@ -15,7 +15,7 @@ class Workout:ObservableObject{
     
     @Transient var duration:Int = 0
     @Transient var formattedDuration:String = "00:00"
-    @Relationship var activitySets:[ActivitySet]{didSet{
+    @Relationship(deleteRule: .cascade) var activitySets:[ActivitySet]{didSet{
         calculateWorkoutDuration()
     }}
     

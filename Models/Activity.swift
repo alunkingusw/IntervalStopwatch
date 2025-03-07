@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Activity:Identifiable{
+class Activity:ObservableObject{
     var name:String
     var activityDescription:String
     var duration:Int { didSet{

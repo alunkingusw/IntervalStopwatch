@@ -21,7 +21,7 @@ class ActivitySet:ObservableObject{
         formattedDuration = Workout.formatDuration(forDuration:duration)
     }
     }
-    @Relationship var activities:[Activity]{didSet{
+    @Relationship(deleteRule: .cascade) var activities:[Activity]{didSet{
         calculateTotalDuration()
     }}
     

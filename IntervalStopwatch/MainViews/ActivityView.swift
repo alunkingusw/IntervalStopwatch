@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ActivityView: View {
     //basic information
-    @State var name:String=""
-    @State var description:String=""
+    @ObservedObject var activity:Activity
+    @State var editingDuration:String = ""
     //also need to have the duration
     
     /*
@@ -18,7 +18,7 @@ struct ActivityView: View {
      * When the user saves, we convert the
      * duration to seconds and save it.
      */
-    @State var duration:String=""
+    
     var units:[String] = ["seconds","minutes"]
     @State var selection:String = "seconds"
     
@@ -26,9 +26,10 @@ struct ActivityView: View {
         NavigationStack{
             Form{
                 Section(header:Text("Activity Information")){
-                    TextField("Name", text:$name)
+                    TextField("Name", text:$activity.name)
                     HStack{
-                        TextField("Duration", text:$duration).keyboardType(.numberPad)
+                        //TODO: Note that we are not saving the duration properly here, this needs sorting.
+                        TextField("Duration", text:$editingDuration).keyboardType(.numberPad)
                         Spacer()
                         Picker("Units", selection:$selection){
                             ForEach(self.units, id: \.self){ unit in
@@ -38,7 +39,7 @@ struct ActivityView: View {
                     }
                 }
                 Section(header:Text("Optional Information")){
-                    TextField("Description", text:$description)
+                    TextField("Description", text:$activity.activityDescription)
                 }
                 Section(header:Text("Re-use previous activity")){
                     
@@ -52,5 +53,5 @@ struct ActivityView: View {
 }
 
 #Preview {
-    ActivityView()
+    ActivityView(activity:Activity.sampleData)
 }

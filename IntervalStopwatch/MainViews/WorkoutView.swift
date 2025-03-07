@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WorkoutView: View {
     //basic information
-    var workout:Workout
+    @ObservedObject var workout:Workout
     //create a blank workout
     @State private var editingWorkout = Workout(name:"")
     @State private var isPresentingEditWorkoutView = false

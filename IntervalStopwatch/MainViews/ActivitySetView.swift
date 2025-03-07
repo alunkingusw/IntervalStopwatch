@@ -10,19 +10,16 @@ import SwiftUI
 struct ActivitySetView: View {
     @ObservedObject var activitySet:ActivitySet
     @State private var isPresentingEditActivitySetView = false
-    @State var name:String=""
-    @State var description:String=""
-    @State var reps:Int = 1
-    @State var newActivityName = ""
+    @State private var editingActivitySet = ActivitySet(name:"")
     
     var body: some View {
         NavigationStack{
-            Form{
+            List{
                 Section(header:Text("Activity Set ")){
-                    TextField("Name", text:$name)
+                    TextField("Name", text:$activitySet.name)
                     
-                    TextField("Description", text:$description)
-                    Picker("Reps", selection:$reps){
+                    TextField("Description", text:$activitySet.activitySetDescription)
+                    Picker("Reps", selection:$activitySet.reps){
                         ForEach(1..<31){
                             if $0 > 1{
                                 Text("\($0) reps")
@@ -39,21 +36,30 @@ struct ActivitySetView: View {
                      * activities which can be
                      * clicked and edited
                      */
-                    List ($activitySet.activities, id:\.self, editActions:.all){  $activity in
-                        ActivityListView(activity: activity)
+                    ForEach (activitySet.activities, id:\.self){  activity in
+                        NavigationLink{
+                            ActivityView(activity:activity)
+                        } label:{
+                            ActivityListView(activity:activity)
+                        }
+                        
                     }
                     if(activitySet.activities.count == 0){
                         Text("Click edit to add activities").font(.subheadline)
                     }
                 }
                 
-            }.toolbar{
-                ToolbarItem(placement:.confirmationAction){
-                    Button("Edit"){
-                        isPresentingEditActivitySetView = true
+            }.navigationTitle(activitySet.name)
+                .toolbar{
+                    ToolbarItem(placement:.confirmationAction){
+                        Button("Edit"){
+                            //we don't want to pass the whole object here
+                            editingActivitySet.clone(originalActivitySet:activitySet)
+                            isPresentingEditActivitySetView = true
+                            
+                        }
                     }
                 }
-            }
         }.sheet(isPresented: $isPresentingEditActivitySetView){
             ActivitySetEditView(activitySet:activitySet)
         }
