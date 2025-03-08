@@ -10,7 +10,7 @@ import SwiftUI
 struct ActivitySetEditView: View {
     @ObservedObject var activitySet:ActivitySet
     @State private var isShowingDeleteAlert = false
-    @Environment(\.dismiss) var dismiss
+    //@Environment(\.dismiss) var dismiss
     
     @State var newActivityName = ""
     
@@ -21,15 +21,8 @@ struct ActivitySetEditView: View {
                     TextField("Name", text:$activitySet.name)
                     
                     TextField("Description", text:$activitySet.activitySetDescription)
-                    Picker("Reps", selection:$activitySet.reps){
-                        ForEach(1..<31){
-                            if $0 > 1{
-                                Text("\($0) reps")
-                            }else{
-                                Text("1 rep")
-                            }
-                        }
-                    }
+                    Stepper("\(activitySet.reps) reps", value:$activitySet.reps, in: 1...100)
+                    
                     
                 }
                 Section(header:Text("Activities")){

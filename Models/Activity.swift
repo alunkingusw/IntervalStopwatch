@@ -28,6 +28,14 @@ class Activity:ObservableObject{
         formattedTime = Workout.formatDuration(forDuration: duration)
     }
     
+    func save(editedActivity:Activity){
+        //copy over the edited information
+        self.name = editedActivity.name
+        self.activityDescription = editedActivity.activityDescription
+        self.duration = editedActivity.duration
+        
+    }
+    
     @Transient func clone(originalActivity:Activity){
         self.name = originalActivity.name
         self.activityDescription = originalActivity.activityDescription

@@ -73,7 +73,7 @@ struct WorkoutView: View {
             
         }.sheet(isPresented: $isPresentingEditWorkoutView){
             NavigationStack{
-                WorkoutEditView(workout:$editingWorkout)
+                WorkoutEditView(workout:editingWorkout)
                     .toolbar{
                         ToolbarItem(placement:.confirmationAction){
                             Button("Save"){

@@ -10,43 +10,50 @@ import SwiftUI
 struct ActivityView: View {
     //basic information
     @ObservedObject var activity:Activity
-    @State var editingDuration:String = ""
+    @State private var editingActivity = Activity(name:"")
     //also need to have the duration
+    @State var isPresentingEditActivityView:Bool = false
     
-    /*
-     * Form specific information.
-     * When the user saves, we convert the
-     * duration to seconds and save it.
-     */
-    
-    var units:[String] = ["seconds","minutes"]
-    @State var selection:String = "seconds"
     
     var body: some View {
         NavigationStack{
-            Form{
-                Section(header:Text("Activity Information")){
-                    TextField("Name", text:$activity.name)
-                    HStack{
-                        //TODO: Note that we are not saving the duration properly here, this needs sorting.
-                        TextField("Duration", text:$editingDuration).keyboardType(.numberPad)
-                        Spacer()
-                        Picker("Units", selection:$selection){
-                            ForEach(self.units, id: \.self){ unit in
-                                Text("\(unit)")
-                            }
-                        }.pickerStyle(.segmented)
-                    }
-                }
-                Section(header:Text("Optional Information")){
-                    TextField("Description", text:$activity.activityDescription)
-                }
-                Section(header:Text("Re-use previous activity")){
+            List{
+                
+                Label("\(activity.formattedTime)", systemImage: "timer")
                     
-                    ScrollView{
-                        
+                
+                
+                Label("\(activity.activityDescription)", systemImage: "info.circle")
+                
+                
+            }.navigationTitle(activity.name)
+                .toolbar{
+                    ToolbarItem(placement:.confirmationAction){
+                        Button("Edit"){
+                            //we don't want to pass the whole object here
+                            editingActivity.clone(originalActivity:activity)
+                            isPresentingEditActivityView = true
+                            
+                        }
                     }
                 }
+        }.sheet(isPresented: $isPresentingEditActivityView){
+            NavigationStack{
+                ActivityEditView(activity:editingActivity)
+                    .toolbar{
+                        ToolbarItem(placement:.confirmationAction){
+                            Button("Save"){
+                                isPresentingEditActivityView = false
+                                activity.save(editedActivity:editingActivity)
+                                
+                            }
+                        }
+                        ToolbarItem(placement:.cancellationAction){
+                            Button("Cancel"){
+                                isPresentingEditActivityView = false
+                            }
+                        }
+                    }
             }
         }
     }

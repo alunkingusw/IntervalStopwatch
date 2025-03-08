@@ -9,9 +9,7 @@ import SwiftUI
 
 struct ActivityEditView: View {
     //basic information
-    @State var name:String=""
-    @State var description:String=""
-    //also need to have the duration
+    @ObservedObject var activity:Activity
     
     /*
      * Form specific information.
@@ -26,19 +24,28 @@ struct ActivityEditView: View {
         NavigationStack{
             Form{
                 Section(header:Text("Activity Information")){
-                    TextField("Name", text:$name)
+                    TextField("Name", text:$activity.name)
                     HStack{
                         TextField("Duration", text:$duration).keyboardType(.numberPad)
-                        Spacer()
-                        Picker("Units", selection:$selection){
-                            ForEach(self.units, id: \.self){ unit in
-                                Text("\(unit)")
+                            .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification)) { _ in
+                                activity.duration = Int(duration) ?? 0
+                                Spacer()
+                                Picker("Units", selection:$selection){
+                                    ForEach(self.units, id: \.self){ unit in
+                                        Text("\(unit)")
+                                    }
+                                }.pickerStyle(.segmented)
                             }
-                        }.pickerStyle(.segmented)
                     }
                 }
                 Section(header:Text("Optional Information")){
-                    TextField("Description", text:$description)
+                    TextField("Description", text:$activity.activityDescription)
+                }
+                Section(header:Text("Re-use previous activity")){
+                    
+                    ScrollView{
+                        
+                    }
                 }
             }
         }
@@ -46,5 +53,5 @@ struct ActivityEditView: View {
 }
 
 #Preview {
-    ActivityEditView()
+    ActivityEditView(activity:Activity.sampleData)
 }

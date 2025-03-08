@@ -41,6 +41,14 @@ class ActivitySet:ObservableObject{
         calculateTotalDuration()
     }
     
+    func save(editedActivitySet:ActivitySet){
+        //copy over the edited information
+        self.name = editedActivitySet.name
+        self.activitySetDescription = editedActivitySet.activitySetDescription
+        self.activities = editedActivitySet.activities
+        self.calculateTotalDuration()
+    }
+    
     @Transient private func calculateTotalDuration() {
             var totalDuration = 0
             for activity in activities {

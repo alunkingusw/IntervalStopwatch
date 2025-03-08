@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WorkoutEditView: View {
     //basic information
-    @Binding var workout:Workout
+    @ObservedObject var workout:Workout
     @State private var isShowingDeleteAlert = false
     @State var newActivitySetName = ""
     @Environment(\.dismiss) var dismiss
@@ -77,5 +77,5 @@ struct WorkoutEditView: View {
 }
 
 #Preview {
-    WorkoutEditView(workout:.constant(Workout.sampleData))
+    WorkoutEditView(workout:Workout.sampleData)
 }

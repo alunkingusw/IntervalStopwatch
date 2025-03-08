@@ -15,19 +15,11 @@ struct ActivitySetView: View {
     var body: some View {
         NavigationStack{
             List{
-                Section(header:Text("Activity Set ")){
-                    TextField("Name", text:$activitySet.name)
+                Section(header:Text("Details")){                    
+                    Label(activitySet.activitySetDescription,systemImage:"info.circle")
                     
-                    TextField("Description", text:$activitySet.activitySetDescription)
-                    Picker("Reps", selection:$activitySet.reps){
-                        ForEach(1..<31){
-                            if $0 > 1{
-                                Text("\($0) reps")
-                            }else{
-                                Text("1 rep")
-                            }
-                        }
-                    }
+                    
+                    Label("\(activitySet.formattedRepDuration) x \(activitySet.reps) = \(activitySet.formattedDuration)", systemImage:"timer")
                     
                 }
                 Section(header:Text("Activities")){
@@ -61,7 +53,22 @@ struct ActivitySetView: View {
                     }
                 }
         }.sheet(isPresented: $isPresentingEditActivitySetView){
-            ActivitySetEditView(activitySet:activitySet)
+            NavigationStack{
+            ActivitySetEditView(activitySet:editingActivitySet).toolbar{
+                    ToolbarItem(placement:.confirmationAction){
+                            Button("Save"){
+                                isPresentingEditActivitySetView = false
+                                activitySet.save(editedActivitySet:editingActivitySet)
+                                
+                            }
+                        }
+                        ToolbarItem(placement:.cancellationAction){
+                            Button("Cancel"){
+                                isPresentingEditActivitySetView = false
+                            }
+                        }
+                    }
+            }
         }
     }
 }
