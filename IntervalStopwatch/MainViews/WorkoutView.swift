@@ -10,9 +10,11 @@ import SwiftUI
 struct WorkoutView: View {
     //basic information
     @ObservedObject var workout:Workout
+    @State var dismissBool:Bool = false
     //create a blank workout
     @State private var editingWorkout = Workout(name:"")
     @State private var isPresentingEditWorkoutView = false
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack{
@@ -49,6 +51,8 @@ struct WorkoutView: View {
                         }else{
                             Button("Start Workout", systemImage: "timer"){
                                 //Navigate to workout screen here
+                                  dismiss()
+                                
                             }
                             .font(.headline)
                         }
@@ -72,8 +76,8 @@ struct WorkoutView: View {
             
             
         }.sheet(isPresented: $isPresentingEditWorkoutView){
-            NavigationStack{
-                WorkoutEditView(workout:editingWorkout)
+            
+            WorkoutEditView(workout:editingWorkout, originalWorkout:workout, deletedWorkout:$dismissBool)
                     .toolbar{
                         ToolbarItem(placement:.confirmationAction){
                             Button("Save"){
@@ -88,6 +92,11 @@ struct WorkoutView: View {
                             }
                         }
                     }
+            
+        }.onChange(of: dismissBool) { oldValue, newValue in
+            if newValue {
+                dismissBool = false
+                dismiss()
             }
         }
     }

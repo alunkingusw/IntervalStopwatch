@@ -43,6 +43,7 @@ class Workout:ObservableObject{
         self.name = originalWorkout.name
         self.workoutDescription = originalWorkout.workoutDescription
         //loop through and clone the activity sets which avoids SwiftData observing
+        self.activitySets = []
         for originalActivitySet in originalWorkout.activitySets {
             var clonedActivitySet = ActivitySet()
             clonedActivitySet.clone(of: originalActivitySet)

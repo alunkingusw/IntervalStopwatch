@@ -31,8 +31,16 @@ struct ActivitySetEditView: View {
                      * activities which can be
                      * clicked and edited
                      */
-                    List ($activitySet.activities, id:\.self, editActions:.all){  $activity in
-                        ActivityListView(activity: activity)
+                    List {
+                        ForEach($activitySet.activities, id:\.self, editActions:.all){
+                            $activity in
+                            HStack{
+                                Image(systemName: "line.3.horizontal") // Sort handle
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 8)
+                                ActivityListView(activity: activity)
+                            }
+                        }.onDelete(perform: deleteActivity).onMove(perform:moveActivity)
                     }
                     HStack {
                         TextField("New Activity", text: $newActivityName)
@@ -52,6 +60,19 @@ struct ActivitySetEditView: View {
             }
         }
     }
+    func deleteActivity(at offsets: IndexSet) {
+        activitySet.activities.remove(atOffsets: offsets)
+    }
+    func moveActivity(from source: IndexSet, to destination: Int) {
+        activitySet.activities.move(fromOffsets: source, toOffset: destination)
+                recalculateSortIndexes()
+            }
+            
+            func recalculateSortIndexes() {
+                for (index, activitySet) in activitySet.activities.enumerated() {
+                    activitySet.sortIndex = index
+                }
+            }
 }
 
 #Preview {

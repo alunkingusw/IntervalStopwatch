@@ -9,11 +9,13 @@ import SwiftUI
 
 struct WorkoutEditView: View {
     //basic information
+    @Environment(\.modelContext) private var modelContext
     @ObservedObject var workout:Workout
     @State private var isShowingDeleteAlert = false
     @State var newActivitySetName = ""
+    let originalWorkout:Workout
     @Environment(\.dismiss) var dismiss
-    
+    @Binding var deletedWorkout:Bool
     var body: some View {
         VStack{
             Form{
@@ -27,17 +29,22 @@ struct WorkoutEditView: View {
                     }
                     
                 }
-                Section(header:Text("Sets - swipe to remove or copy")){
+                Section(header:Text("Sets - swipe to delete")){
                     /*
                      * Loop through and display the
                      * Activity Sets which can be
-                     * clicked and edited
+                     * dragged for delete and ordered
                      */
-                    List (workout.activitySets){ workoutActivitySet in
-                        
-                        ActivitySetListView(activitySet:workoutActivitySet)
-                        
-                        
+                    List {
+                        ForEach(workout.activitySets.sorted(by: {$0.sortIndex < $1.sortIndex})){ workoutActivitySet in
+                            HStack{
+                                Image(systemName: "line.3.horizontal") // Sort handle
+                                                                    .foregroundColor(.gray)
+                                                                    .padding(.trailing, 8)
+                                ActivitySetListView(activitySet:workoutActivitySet)
+                                
+                            }
+                        }.onDelete(perform: deleteActivitySet).onMove(perform:moveActivitySet)
                     }
                     HStack {
                         TextField("New Activity Set", text: $newActivitySetName)
@@ -70,12 +77,28 @@ struct WorkoutEditView: View {
             titleVisibility: .visible
         ) {
             Button("Delete", role: .destructive) {
-                
+                modelContext.delete(originalWorkout)
+                deletedWorkout = true
+                dismiss()
             }
         }
     }
+    
+    func deleteActivitySet(at offsets: IndexSet) {
+        workout.activitySets.remove(atOffsets: offsets)
+    }
+    func moveActivitySet(from source: IndexSet, to destination: Int) {
+        workout.activitySets.move(fromOffsets: source, toOffset: destination)
+                recalculateSortIndexes()
+            }
+            
+            func recalculateSortIndexes() {
+                for (index, activitySet) in workout.activitySets.enumerated() {
+                    activitySet.sortIndex = index
+                }
+            }
 }
 
 #Preview {
-    WorkoutEditView(workout:Workout.sampleData)
+    WorkoutEditView(workout:Workout.sampleData, originalWorkout:Workout.sampleData, deletedWorkout:.constant(false))
 }

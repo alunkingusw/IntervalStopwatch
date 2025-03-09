@@ -48,6 +48,8 @@ class ActivitySet:ObservableObject{
         //copy over the edited information. No need to copy the sortIndex - that hasn't changed in the edit screen
         self.name = editedActivitySet.name
         self.activitySetDescription = editedActivitySet.activitySetDescription
+        self.reps = editedActivitySet.reps
+        self.sortIndex = editedActivitySet.sortIndex
         self.activities = editedActivitySet.activities
         self.calculateTotalDuration()
     }
@@ -69,6 +71,8 @@ class ActivitySet:ObservableObject{
         self.name = originalActivitySet.name
         self.activitySetDescription = originalActivitySet.activitySetDescription
         self.reps = originalActivitySet.reps
+        self.sortIndex = originalActivitySet.sortIndex
+        self.activities = []
         for originalActivity in originalActivitySet.activities {
             let clonedActivity = Activity()
             clonedActivity.clone(of: originalActivity)

@@ -16,6 +16,7 @@ class Activity:ObservableObject{
     var duration:Int{didSet{
         formattedTime = Workout.formatDuration(forDuration: duration)
     }}
+    
     var formattedTime:String = ""
     
     init(
@@ -32,9 +33,9 @@ class Activity:ObservableObject{
     }
     
     func save(editedActivity:Activity){
-        //copy over the edited information. No need to change sortIndex, it hasn't changed on the edit screen.
         self.name = editedActivity.name
         self.activityDescription = editedActivity.activityDescription
+        self.sortIndex = editedActivity.sortIndex
         self.duration = editedActivity.duration
         self.formattedTime = Workout.formatDuration(for: duration)
     }
@@ -43,6 +44,7 @@ class Activity:ObservableObject{
         self.name = originalActivity.name
         self.activityDescription = originalActivity.activityDescription
         self.duration = originalActivity.duration
+        self.sortIndex = originalActivity.sortIndex
     }
 }
 

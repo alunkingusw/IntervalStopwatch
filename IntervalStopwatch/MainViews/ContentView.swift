@@ -10,10 +10,11 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
+    
     @Query var workouts:[Workout]
     @State private var isPresentingNewWorkoutView = false
     var body: some View {
-        NavigationStack {
+        NavigationStack{
             //TODO: add sorting and searching here
             List (workouts){ workout in
                 NavigationLink{

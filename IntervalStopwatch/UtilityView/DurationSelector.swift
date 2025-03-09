@@ -9,12 +9,19 @@ import SwiftUI
 
 struct DurationSelector: View {
     @Binding var durationInt:Int
-    @State private var durationString=""
+    @State private var durationString:String
     private var units:[String] = ["seconds","minutes"]
-    @State private var selection:String = "seconds"
+    @State private var selection:String
     init(durationInt: Binding<Int>) {
         self._durationInt = durationInt
-        
+        if durationInt.wrappedValue % 60 == 0{
+            selection = "minutes"
+            //display the string as minutes
+            self.durationString = String((durationInt.wrappedValue / 60))
+        }else{
+            selection = "seconds"
+            self.durationString = String(durationInt.wrappedValue)
+        }
     }
     
     var body: some View {
@@ -23,9 +30,6 @@ struct DurationSelector: View {
                     .keyboardType(.numberPad)
                     .onChange(of: durationString) {
                         updateDurationInt()
-                    }
-                    .onAppear {
-                        durationString = String(durationInt)
                     }
                 Spacer()
                 Picker("Units", selection: $selection) {
@@ -54,5 +58,5 @@ struct DurationSelector: View {
 }
 
 #Preview {
-    DurationSelector(durationInt:.constant(40))
+    DurationSelector(durationInt:.constant(600))
 }
