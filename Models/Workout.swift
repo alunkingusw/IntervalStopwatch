@@ -13,8 +13,8 @@ class Workout:ObservableObject{
     var name:String
     var workoutDescription:String
     
-    @Transient var duration:Int = 0
-    @Transient var formattedDuration:String = "00:00"
+    var duration:Int = 0
+    var formattedDuration:String = "00:00"
     @Relationship(deleteRule: .cascade) var activitySets:[ActivitySet]{didSet{
         calculateWorkoutDuration()
     }}
@@ -39,13 +39,13 @@ class Workout:ObservableObject{
         self.calculateWorkoutDuration()
     }
     
-    @Transient func clone(originalWorkout:Workout){
+    @Transient func clone(of originalWorkout:Workout){
         self.name = originalWorkout.name
         self.workoutDescription = originalWorkout.workoutDescription
         //loop through and clone the activity sets which avoids SwiftData observing
         for originalActivitySet in originalWorkout.activitySets {
-            let clonedActivitySet = ActivitySet()
-            clonedActivitySet.clone(originalActivitySet: originalActivitySet)
+            var clonedActivitySet = ActivitySet()
+            clonedActivitySet.clone(of: originalActivitySet)
             self.activitySets.append(clonedActivitySet)
         }
         
@@ -53,24 +53,24 @@ class Workout:ObservableObject{
         self.calculateWorkoutDuration()
     }
     
-    @Transient private func calculateWorkoutDuration() {
+    private func calculateWorkoutDuration() {
             var totalDuration = 0
             for activity in activitySets {
                 totalDuration += activity.duration
             }
         //before we complete the total, save the pre-rep duration
-        formattedDuration = Workout.formatDuration(forDuration: totalDuration)
+        formattedDuration = Workout.formatDuration(for: totalDuration)
         
     }
     
-    @Transient static func formatDuration(forDuration:Int) -> String{
+    @Transient static func formatDuration(for duration:Int) -> String{
             var returnVal: String = ""
             
-            if forDuration > 3600 {
-                let hours = (Int(forDuration / 3600))
+            if duration > 3600 {
+                let hours = (Int(duration / 3600))
                 returnVal += (String(format: "%02d:", hours))
             }
-            var remainingDuration = forDuration % 3600
+            var remainingDuration = duration % 3600
             if remainingDuration >= 60 {
                 let minutes = (Int(remainingDuration / 60))
                 returnVal += (String(format: "%02d:", minutes))

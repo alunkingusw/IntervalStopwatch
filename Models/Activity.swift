@@ -12,31 +12,34 @@ import SwiftData
 class Activity:ObservableObject{
     var name:String
     var activityDescription:String
-    var duration:Int { didSet{
+    var sortIndex:Int
+    var duration:Int{didSet{
         formattedTime = Workout.formatDuration(forDuration: duration)
     }}
-    @Transient var formattedTime:String = ""
+    var formattedTime:String = ""
     
     init(
         name: String="Work",
         activityDescription: String = "",
-        duration: Int = 60
+        duration: Int = 60,
+        sortIndex:Int = 99
     ) {
         self.name = name
         self.activityDescription = activityDescription
         self.duration = duration
-        formattedTime = Workout.formatDuration(forDuration: duration)
+        self.sortIndex = sortIndex
+        self.formattedTime = Workout.formatDuration(for: duration)
     }
     
     func save(editedActivity:Activity){
-        //copy over the edited information
+        //copy over the edited information. No need to change sortIndex, it hasn't changed on the edit screen.
         self.name = editedActivity.name
         self.activityDescription = editedActivity.activityDescription
         self.duration = editedActivity.duration
-        
+        self.formattedTime = Workout.formatDuration(for: duration)
     }
     
-    @Transient func clone(originalActivity:Activity){
+    @Transient func clone(of originalActivity:Activity){
         self.name = originalActivity.name
         self.activityDescription = originalActivity.activityDescription
         self.duration = originalActivity.duration

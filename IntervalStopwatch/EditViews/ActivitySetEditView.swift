@@ -38,7 +38,7 @@ struct ActivitySetEditView: View {
                         TextField("New Activity", text: $newActivityName)
                         Button(action: {
                             withAnimation {
-                                let activity = Activity(name: newActivityName, duration:60)
+                                let activity = Activity(name: newActivityName, duration:60, sortIndex:activitySet.activities.count)
                                 activitySet.activities.append(activity)
                                 newActivityName = ""
                             }

@@ -31,7 +31,7 @@ struct ActivityView: View {
                     ToolbarItem(placement:.confirmationAction){
                         Button("Edit"){
                             //we don't want to pass the whole object here
-                            editingActivity.clone(originalActivity:activity)
+                            editingActivity.clone(of:activity)
                             isPresentingEditActivityView = true
                             
                         }
@@ -45,7 +45,6 @@ struct ActivityView: View {
                             Button("Save"){
                                 isPresentingEditActivityView = false
                                 activity.save(editedActivity:editingActivity)
-                                
                             }
                         }
                         ToolbarItem(placement:.cancellationAction){

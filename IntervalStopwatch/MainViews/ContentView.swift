@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var isPresentingNewWorkoutView = false
     var body: some View {
         NavigationStack {
+            //TODO: add sorting and searching here
             List (workouts){ workout in
                 NavigationLink{
                     WorkoutView(workout:workout)

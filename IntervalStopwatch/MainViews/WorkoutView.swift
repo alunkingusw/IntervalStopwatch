@@ -33,7 +33,7 @@ struct WorkoutView: View {
                          * clicked and edited
                          */
                         
-                        ForEach (workout.activitySets){ workoutActivitySet in
+                        ForEach (workout.activitySets.sorted(by:{$0.sortIndex < $1.sortIndex})){ workoutActivitySet in
                             NavigationLink{
                                 ActivitySetView(activitySet:workoutActivitySet)
                             } label:{
@@ -61,7 +61,7 @@ struct WorkoutView: View {
                     ToolbarItem(placement:.confirmationAction){
                         Button("Edit"){
                             //we don't want to pass the whole object here
-                            editingWorkout.clone(originalWorkout:workout)
+                            editingWorkout.clone(of:workout)
                             isPresentingEditWorkoutView = true
                             
                         }

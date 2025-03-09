@@ -12,11 +12,12 @@ class ActivitySet:ObservableObject{
     var name:String
     var activitySetDescription:String
     var reps:Int8
+    var sortIndex:Int
     //var hasAutoRest:Bool
     //var autoRestDuration:Int
-    @Transient var formattedDuration:String = ""
-    @Transient var formattedRepDuration:String = ""
-    @Transient var duration:Int = 0{didSet{
+    var formattedDuration:String = ""
+    var formattedRepDuration:String = ""
+    var duration:Int = 0{didSet{
         //update the formattedDuration
         formattedDuration = Workout.formatDuration(forDuration:duration)
     }
@@ -28,7 +29,8 @@ class ActivitySet:ObservableObject{
     init(name: String = "Workout Set",
          activitySetDescription: String = "",
          reps: Int8 = 1,
-         //hasAutoRest:Bool = false,
+         sortIndex:Int = 99,
+         //hasAutoRest:Bool= false,
          //autoRestDuration:Int = 0,
          activities: [Activity] = []
     ) {
@@ -36,20 +38,21 @@ class ActivitySet:ObservableObject{
         self.activitySetDescription = activitySetDescription
         self.reps = reps
         self.activities = activities
+        self.sortIndex = sortIndex
         //self.hasAutoRest = hasAutoRest
         //self.autoRestDuration = autoRestDuration
         calculateTotalDuration()
     }
     
     func save(editedActivitySet:ActivitySet){
-        //copy over the edited information
+        //copy over the edited information. No need to copy the sortIndex - that hasn't changed in the edit screen
         self.name = editedActivitySet.name
         self.activitySetDescription = editedActivitySet.activitySetDescription
         self.activities = editedActivitySet.activities
         self.calculateTotalDuration()
     }
     
-    @Transient private func calculateTotalDuration() {
+    private func calculateTotalDuration() {
             var totalDuration = 0
             for activity in activities {
                 totalDuration += activity.duration
@@ -58,17 +61,17 @@ class ActivitySet:ObservableObject{
                 }*/
             }
         //before we complete the total, save the pre-rep duration
-        formattedRepDuration = Workout.formatDuration(forDuration: totalDuration)
+        formattedRepDuration = Workout.formatDuration(for: totalDuration)
         duration = totalDuration * Int(reps)
         }
 
-    @Transient func clone(originalActivitySet:ActivitySet){
+    @Transient func clone(of originalActivitySet:ActivitySet){
         self.name = originalActivitySet.name
         self.activitySetDescription = originalActivitySet.activitySetDescription
         self.reps = originalActivitySet.reps
         for originalActivity in originalActivitySet.activities {
             let clonedActivity = Activity()
-            clonedActivity.clone(originalActivity: originalActivity)
+            clonedActivity.clone(of: originalActivity)
             self.activities.append(clonedActivity)
         }
         //self.hasAutoRest = hasAutoRest

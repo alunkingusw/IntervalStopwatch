@@ -25,10 +25,9 @@ struct ActivitySetView: View {
                 Section(header:Text("Activities")){
                     /*
                      * Loop through and display the
-                     * activities which can be
-                     * clicked and edited
+                     * activities.
                      */
-                    ForEach (activitySet.activities, id:\.self){  activity in
+                    ForEach (activitySet.activities.sorted(by:{$0.sortIndex < $1.sortIndex})){  activity in
                         NavigationLink{
                             ActivityView(activity:activity)
                         } label:{
@@ -45,8 +44,8 @@ struct ActivitySetView: View {
                 .toolbar{
                     ToolbarItem(placement:.confirmationAction){
                         Button("Edit"){
-                            //we don't want to pass the whole object here
-                            editingActivitySet.clone(originalActivitySet:activitySet)
+                            //Clone so we don't mess with Swift data's observing
+                            editingActivitySet.clone(of:activitySet)
                             isPresentingEditActivitySetView = true
                             
                         }
