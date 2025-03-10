@@ -37,6 +37,10 @@ struct ContentView: View {
         }.padding()
         .sheet(isPresented: $isPresentingNewWorkoutView){
             WorkoutCreateView()
+        }.onAppear{
+            for workout in workouts{
+                workout.updateCallback = workout.calculateWorkoutDuration
+            }
         }
     }
     func addWorkout() {

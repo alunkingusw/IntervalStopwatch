@@ -76,8 +76,8 @@ struct WorkoutView: View {
             
             
         }.sheet(isPresented: $isPresentingEditWorkoutView){
-            
-            WorkoutEditView(workout:editingWorkout, originalWorkout:workout, deletedWorkout:$dismissBool)
+            NavigationStack{
+                WorkoutEditView(workout:editingWorkout, originalWorkout:workout, deletedWorkout:$dismissBool)
                     .toolbar{
                         ToolbarItem(placement:.confirmationAction){
                             Button("Save"){
@@ -92,11 +92,15 @@ struct WorkoutView: View {
                             }
                         }
                     }
-            
+            }
         }.onChange(of: dismissBool) { oldValue, newValue in
             if newValue {
                 dismissBool = false
                 dismiss()
+            }
+        }.onAppear{
+            for activitySet in workout.activitySets{
+                activitySet.updateCallback = workout.updateCallback
             }
         }
     }

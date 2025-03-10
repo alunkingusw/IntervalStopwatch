@@ -13,7 +13,7 @@ struct ActivitySetEditView: View {
     //@Environment(\.dismiss) var dismiss
     
     @State var newActivityName = ""
-    
+    @State var newActivityDuration = 60
     var body: some View {
         NavigationStack{
             Form{
@@ -42,18 +42,28 @@ struct ActivitySetEditView: View {
                             }
                         }.onDelete(perform: deleteActivity).onMove(perform:moveActivity)
                     }
-                    HStack {
-                        TextField("New Activity", text: $newActivityName)
-                        Button(action: {
-                            withAnimation {
-                                let activity = Activity(name: newActivityName, duration:60, sortIndex:activitySet.activities.count)
-                                activitySet.activities.append(activity)
-                                newActivityName = ""
+                    VStack{
+                        HStack {
+                            TextField("New Activity", text: $newActivityName)
+                            
+                            Button(action: {
+                                withAnimation {
+                                    let activity = Activity(
+                                        name:newActivityName,
+                                        duration:newActivityDuration,
+                                        sortIndex:activitySet.activities.count,
+                                        updateCallback:activitySet.updateCallback
+                                    )
+                                    activitySet.activities.append(activity)
+                                    newActivityName = ""
+                                    newActivityDuration = 60
+                                }
+                            }) {
+                                Image(systemName: "plus.circle.fill")
                             }
-                        }) {
-                            Image(systemName: "plus.circle.fill")
+                            .disabled(newActivityName.isEmpty)
                         }
-                        .disabled(newActivityName.isEmpty)
+                        DurationSelector(durationInt:$newActivityDuration).opacity(newActivityName.isEmpty ? 0 : 1)
                     }
                 }
                 
@@ -81,9 +91,9 @@ struct ActivitySetEditView: View {
         activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
         reps:2,
         activities:[
-            Activity(name:"Push ups", duration:60),
-            Activity(name:"Rest", duration:30),
-            Activity(name:"Sit ups", duration:60),
-            Activity(name:"Rest", duration:30),
-        ]))
+            Activity(name:"Push ups", duration:60, updateCallback: {}),
+            Activity(name:"Rest", duration:30, updateCallback: {}),
+            Activity(name:"Sit ups", duration:60, updateCallback: {}),
+            Activity(name:"Rest", duration:30, updateCallback: {}),
+        ], updateCallback:{}))
 }

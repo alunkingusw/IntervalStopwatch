@@ -14,7 +14,8 @@ struct DurationSelector: View {
     @State private var selection:String
     init(durationInt: Binding<Int>) {
         self._durationInt = durationInt
-        if durationInt.wrappedValue % 60 == 0{
+        if durationInt.wrappedValue > 60 &&
+            durationInt.wrappedValue % 60 == 0{
             selection = "minutes"
             //display the string as minutes
             self.durationString = String((durationInt.wrappedValue / 60))

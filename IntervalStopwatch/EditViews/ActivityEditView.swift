@@ -29,12 +29,13 @@ struct ActivityEditView: View {
                 Section(header:Text("Optional Information")){
                     TextField("Description", text:$activity.activityDescription)
                 }
+                /*
                 Section(header:Text("Re-use previous activity")){
                     
                     ScrollView{
                         
                     }
-                }
+                }*/
             }
         }
     }

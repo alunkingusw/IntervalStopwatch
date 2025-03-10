@@ -18,6 +18,8 @@ class Workout:ObservableObject{
     @Relationship(deleteRule: .cascade) var activitySets:[ActivitySet]{didSet{
         calculateWorkoutDuration()
     }}
+    //create a blank callback for use when the workout children update
+    @Transient var updateCallback = {}
     
     init(
         name: String = "Workout",
@@ -27,9 +29,11 @@ class Workout:ObservableObject{
         self.name = name
         self.workoutDescription = workoutDescription
         self.activitySets = activitySets
-        
+        self.updateCallback = {self.calculateWorkoutDuration()}
         self.calculateWorkoutDuration()
     }
+    
+    
     
     func save(editedWorkout:Workout){
         //copy over the edited information
@@ -45,7 +49,7 @@ class Workout:ObservableObject{
         //loop through and clone the activity sets which avoids SwiftData observing
         self.activitySets = []
         for originalActivitySet in originalWorkout.activitySets {
-            var clonedActivitySet = ActivitySet()
+            let clonedActivitySet = ActivitySet(updateCallback:{})
             clonedActivitySet.clone(of: originalActivitySet)
             self.activitySets.append(clonedActivitySet)
         }
@@ -54,14 +58,14 @@ class Workout:ObservableObject{
         self.calculateWorkoutDuration()
     }
     
-    private func calculateWorkoutDuration() {
+    func calculateWorkoutDuration() {
             var totalDuration = 0
-            for activity in activitySets {
-                totalDuration += activity.duration
+            for activitySet in activitySets {
+                activitySet.calculateTotalDuration()
+                totalDuration += activitySet.duration
             }
         //before we complete the total, save the pre-rep duration
-        formattedDuration = Workout.formatDuration(for: totalDuration)
-        
+        formattedDuration = Workout.formatDuration(for: totalDuration) 
     }
     
     @Transient static func formatDuration(for duration:Int) -> String{
@@ -98,21 +102,21 @@ extension Workout{
             activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
             reps:2,
             activities:[
-                Activity(name:"Push ups", duration:60),
-                Activity(name:"Rest", duration:30),
-                Activity(name:"Sit ups", duration:60),
-                Activity(name:"Rest", duration:30),
-            ]),
+                Activity(name:"Push ups", duration:60, updateCallback: {}),
+                Activity(name:"Rest", duration:30, updateCallback: {}),
+                Activity(name:"Sit ups", duration:60, updateCallback: {}),
+                Activity(name:"Rest", duration:30, updateCallback: {}),
+            ], updateCallback:{}),
         ActivitySet(
             name:"Another Set",
             activitySetDescription:"More description",
             reps:3,
             activities:[
-                Activity(name:"Push ups", duration:120),
-                Activity(name:"Rest", duration:60),
-                Activity(name:"Sit ups", duration:120),
-                Activity(name:"Rest", duration:60),
-            ])
+                Activity(name:"Push ups", duration:120, updateCallback: {}),
+                Activity(name:"Rest", duration:60, updateCallback: {}),
+                Activity(name:"Sit ups", duration:120, updateCallback: {}),
+                Activity(name:"Rest", duration:60, updateCallback: {}),
+            ], updateCallback:{})
     ])
     static let multipleSampleData: [Workout] = [
         Workout(name:"Example workout",
@@ -123,21 +127,21 @@ extension Workout{
                         activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
                         reps:2,
                         activities:[
-                            Activity(name:"Push ups", duration:60),
-                            Activity(name:"Rest", duration:30),
-                            Activity(name:"Sit ups", duration:60),
-                            Activity(name:"Rest", duration:30),
-                        ]),
+                            Activity(name:"Push ups", duration:60, updateCallback: {}),
+                            Activity(name:"Rest", duration:30, updateCallback: {}),
+                            Activity(name:"Sit ups", duration:60, updateCallback: {}),
+                            Activity(name:"Rest", duration:30, updateCallback: {}),
+                        ], updateCallback:{}),
                     ActivitySet(
                         name:"Another Set",
                         activitySetDescription:"More description",
                         reps:3,
                         activities:[
-                            Activity(name:"Push ups", duration:120),
-                            Activity(name:"Rest", duration:60),
-                            Activity(name:"Sit ups", duration:120),
-                            Activity(name:"Rest", duration:60),
-                        ])
+                            Activity(name:"Push ups", duration:120, updateCallback: {}),
+                            Activity(name:"Rest", duration:60, updateCallback: {}),
+                            Activity(name:"Sit ups", duration:120, updateCallback: {}),
+                            Activity(name:"Rest", duration:60, updateCallback: {}),
+                        ], updateCallback:{})
                 ]),
         Workout(name:"Another workout",
                 workoutDescription: "HIIT Class",
@@ -147,31 +151,31 @@ extension Workout{
                         activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
                         reps:2,
                         activities:[
-                            Activity(name:"Push ups", duration:60),
-                            Activity(name:"Rest", duration:30),
-                            Activity(name:"Sit ups", duration:60),
-                            Activity(name:"Rest", duration:30),
-                        ]),
+                            Activity(name:"Push ups", duration:60, updateCallback: {}),
+                            Activity(name:"Rest", duration:30, updateCallback: {}),
+                            Activity(name:"Sit ups", duration:60, updateCallback: {}),
+                            Activity(name:"Rest", duration:30, updateCallback: {}),
+                        ], updateCallback:{}),
                     ActivitySet(
                         name:"Workout Set",
                         activitySetDescription:"More description",
                         reps:3,
                         activities:[
-                            Activity(name:"Push ups", duration:120),
-                            Activity(name:"Rest", duration:180),
-                            Activity(name:"Sit ups", duration:120),
-                            Activity(name:"Rest", duration:180),
-                        ]),
+                            Activity(name:"Push ups", duration:120, updateCallback: {}),
+                            Activity(name:"Rest", duration:180, updateCallback: {}),
+                            Activity(name:"Sit ups", duration:120, updateCallback: {}),
+                            Activity(name:"Rest", duration:180, updateCallback: {}),
+                        ], updateCallback:{}),
                     ActivitySet(
                         name:"Cool Down",
                         activitySetDescription:"More description",
                         reps:3,
                         activities:[
-                            Activity(name:"Push ups", duration:120),
-                            Activity(name:"Rest", duration:60),
-                            Activity(name:"Sit ups", duration:60),
-                            Activity(name:"Rest", duration:60),
-                        ])
+                            Activity(name:"Push ups", duration:120, updateCallback: {}),
+                            Activity(name:"Rest", duration:60, updateCallback: {}),
+                            Activity(name:"Sit ups", duration:60, updateCallback: {}),
+                            Activity(name:"Rest", duration:60, updateCallback: {}),
+                        ], updateCallback:{})
                 ])
         ]
 }

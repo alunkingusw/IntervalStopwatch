@@ -50,7 +50,7 @@ struct WorkoutEditView: View {
                         TextField("New Activity Set", text: $newActivitySetName)
                         Button(action: {
                             withAnimation {
-                                let activitySet = ActivitySet(name: newActivitySetName, sortIndex:workout.activitySets.count)
+                                let activitySet = ActivitySet(name: newActivitySetName, sortIndex:workout.activitySets.count, updateCallback:workout.updateCallback)
                                 workout.activitySets.append(activitySet)
                                 newActivitySetName = ""
                             }

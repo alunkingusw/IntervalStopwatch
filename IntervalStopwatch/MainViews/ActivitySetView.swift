@@ -10,7 +10,7 @@ import SwiftUI
 struct ActivitySetView: View {
     @ObservedObject var activitySet:ActivitySet
     @State private var isPresentingEditActivitySetView = false
-    @State private var editingActivitySet = ActivitySet(name:"")
+    @State private var editingActivitySet = ActivitySet(name:"", updateCallback:{})
     
     var body: some View {
         NavigationStack{
@@ -58,7 +58,8 @@ struct ActivitySetView: View {
                             Button("Save"){
                                 isPresentingEditActivitySetView = false
                                 activitySet.save(editedActivitySet:editingActivitySet)
-                                
+                                //update the times for everything
+                                activitySet.updateCallback()
                             }
                         }
                         ToolbarItem(placement:.cancellationAction){
@@ -67,6 +68,10 @@ struct ActivitySetView: View {
                             }
                         }
                     }
+            }
+        }.onAppear{
+            for activity in activitySet.activities{
+                activity.updateCallback = activitySet.updateCallback
             }
         }
     }

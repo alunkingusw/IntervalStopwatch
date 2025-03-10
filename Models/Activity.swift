@@ -14,21 +14,25 @@ class Activity:ObservableObject{
     var activityDescription:String
     var sortIndex:Int
     var duration:Int{didSet{
-        formattedTime = Workout.formatDuration(forDuration: duration)
+        self.formattedTime = Workout.formatDuration(for: duration)
+        //if we have a parent, inform it that the duration of the activity has changed.
+        parentActivitySet?.triggerUpdate()
     }}
-    
+    var parentActivitySet:ActivitySet?
     var formattedTime:String = ""
     
     init(
         name: String="Work",
         activityDescription: String = "",
         duration: Int = 60,
-        sortIndex:Int = 99
+        sortIndex:Int = 99,
+        parent:ActivitySet? = nil
     ) {
         self.name = name
         self.activityDescription = activityDescription
         self.duration = duration
         self.sortIndex = sortIndex
+        self.parentActivitySet = parent
         self.formattedTime = Workout.formatDuration(for: duration)
     }
     
@@ -37,7 +41,8 @@ class Activity:ObservableObject{
         self.activityDescription = editedActivity.activityDescription
         self.sortIndex = editedActivity.sortIndex
         self.duration = editedActivity.duration
-        self.formattedTime = Workout.formatDuration(for: duration)
+        self.updateCallback = editedActivity.updateCallback
+        self.formattedTime = Workout.formatDuration(for: self.duration)
     }
     
     @Transient func clone(of originalActivity:Activity){
@@ -45,9 +50,11 @@ class Activity:ObservableObject{
         self.activityDescription = originalActivity.activityDescription
         self.duration = originalActivity.duration
         self.sortIndex = originalActivity.sortIndex
+        self.updateCallback = originalActivity.updateCallback
+        self.formattedTime = Workout.formatDuration(for: self.duration)
     }
 }
 
 extension Activity{
-    static let sampleData:Activity = Activity(name:"Push ups", duration:60)
+    static let sampleData:Activity = Activity(name:"Push ups", duration:60, updateCallback: {})
 }

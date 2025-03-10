@@ -45,7 +45,7 @@ struct ActivitySetCreateView: View {
                         TextField("New Activity", text: $newActivityName)
                         Button(action: {
                             withAnimation {
-                                let activity = Activity(name: newActivityName, duration:60)
+                                let activity = Activity(name: newActivityName, duration:60, updateCallback:activitySet.updateCallback)
                                 activitySet.activities.append(activity)
                                 newActivityName = ""
                             }
