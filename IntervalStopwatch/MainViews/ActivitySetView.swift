@@ -45,7 +45,7 @@ struct ActivitySetView: View {
                     ToolbarItem(placement:.confirmationAction){
                         Button("Edit"){
                             //Clone so we don't mess with Swift data's observing
-                            editingActivitySet.clone(of:activitySet)
+                            editingActivitySet = ActivitySet.clone(of:activitySet)
                             isPresentingEditActivitySetView = true
                             
                         }
@@ -53,7 +53,7 @@ struct ActivitySetView: View {
                 }
         }.sheet(isPresented: $isPresentingEditActivitySetView){
             NavigationStack{
-            ActivitySetEditView(activitySet:editingActivitySet).toolbar{
+            ActivitySetEditView(activitySet:$editingActivitySet).toolbar{
                     ToolbarItem(placement:.confirmationAction){
                             Button("Save"){
                                 isPresentingEditActivitySetView = false

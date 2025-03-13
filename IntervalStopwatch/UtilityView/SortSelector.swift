@@ -7,12 +7,53 @@
 
 import SwiftUI
 
+
+
 struct SortSelector: View {
+    enum SortBy {
+        case name
+        case duration
+        case sets
+    }
+    
+    
+    @Binding var orderAscending:Bool
+    @Binding var orderBy: String
+    
+    @State var orderAscendingSelection:String = "arrow.up"{
+        didSet{
+            print("hello")
+            orderAscending = orderAscendingSelection == "arrow.down"
+        }
+    }
+    
+    private var orderAscendingOptions: [String] = ["arrow.up", "arrow.down"]
+    private var orderByOptions: [String] = ["Name", "Duration", "Sets"]
+    
+    
+    public init(orderAscending: Binding<Bool>, orderBy: Binding<String>) {
+        self._orderAscending = orderAscending
+        self._orderBy = orderBy
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            Picker("Field", selection:$orderBy) {
+                ForEach(self.orderByOptions, id: \.self) { unit in
+                    Text(unit)
+                }
+            }
+            .pickerStyle(.segmented)
+
+            Picker("Order", selection: $orderAscendingSelection) {
+                ForEach(self.orderAscendingOptions, id: \.self) { unit in
+                    
+                    Image(systemName: unit)
+                }
+            }
+            .pickerStyle(.segmented)
+            .frame(width: 150)
+        }
     }
 }
 
-#Preview {
-    SortSelector()
-}

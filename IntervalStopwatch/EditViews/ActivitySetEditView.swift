@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ActivitySetEditView: View {
-    @ObservedObject var activitySet:ActivitySet
+    @Binding var activitySet:ActivitySet
     @State private var isShowingDeleteAlert = false
     //@Environment(\.dismiss) var dismiss
     
@@ -37,8 +37,13 @@ struct ActivitySetEditView: View {
                             HStack{
                                 Image(systemName: "line.3.horizontal") // Sort handle
                                     .foregroundColor(.gray)
-                                    .padding(.trailing, 8)
+                                    .padding(.trailing, 8).accessibilityLabel("Image indicating drag to move")
                                 ActivityListView(activity: activity)
+                                /*Button(action: {
+                                    print("work needed here")
+                                }) {
+                                    Image(systemName:"minus.circle.fill").foregroundStyle(.red).padding(.leading, 10)
+                                }.accessibilityLabel("Delete Activity Set")*/
                             }
                         }.onDelete(perform: deleteActivity).onMove(perform:moveActivity)
                     }
@@ -59,7 +64,7 @@ struct ActivitySetEditView: View {
                                     newActivityDuration = 60
                                 }
                             }) {
-                                Image(systemName: "plus.circle.fill")
+                                Image(systemName: "plus.circle.fill").accessibilityLabel("Add activity (disabled until a name is entered)")
                             }
                             .disabled(newActivityName.isEmpty)
                         }
@@ -86,14 +91,5 @@ struct ActivitySetEditView: View {
 }
 
 #Preview {
-    ActivitySetEditView(activitySet:ActivitySet(
-        name:"Example Set",
-        activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
-        reps:2,
-        activities:[
-            Activity(name:"Push ups", duration:60, updateCallback: {}),
-            Activity(name:"Rest", duration:30, updateCallback: {}),
-            Activity(name:"Sit ups", duration:60, updateCallback: {}),
-            Activity(name:"Rest", duration:30, updateCallback: {}),
-        ], updateCallback:{}))
+    ActivitySetEditView(activitySet:.constant(ActivitySet.sampleData))
 }

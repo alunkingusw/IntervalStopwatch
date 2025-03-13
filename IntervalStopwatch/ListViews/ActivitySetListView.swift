@@ -18,7 +18,7 @@ struct ActivitySetListView: View {
                 HStack{
                     Image(systemName:"timer")
                     Text(activitySet.formattedDuration)
-                } 
+                } .accessibilityLabel("The total activity set time")
             }.font(.headline)
             HStack{
                 Text("\(activitySet.activities.count) activities")

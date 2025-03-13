@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ActivityEditView: View {
     //basic information
-    @ObservedObject var activity:Activity
+    @Binding var activity:Activity
     
     /*
      * Form specific information.
@@ -42,5 +42,5 @@ struct ActivityEditView: View {
 }
 
 #Preview {
-    ActivityEditView(activity:Activity.sampleData)
+    ActivityEditView(activity:.constant(Activity.sampleData))
 }

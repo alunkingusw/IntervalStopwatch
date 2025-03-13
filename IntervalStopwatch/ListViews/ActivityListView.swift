@@ -18,7 +18,7 @@ struct ActivityListView: View {
                 HStack{
                     Image(systemName:"timer")
                     Text(activity.formattedTime)
-                } 
+                }.accessibilityLabel("The activity time")
             }
             
             //Text("\(activitySet.activitySetDescription)")

@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Activity:ObservableObject{
+class Activity:Identifiable, ObservableObject{
     var name:String
     var activityDescription:String
     var sortIndex:Int
@@ -18,7 +18,8 @@ class Activity:ObservableObject{
         //if we have a parent, inform it that the duration of the activity has changed.
         parentActivitySet?.triggerUpdate()
     }}
-    var parentActivitySet:ActivitySet?
+    @Transient var updateCallback:()->Void = {}
+    
     var formattedTime:String = ""
     
     init(
@@ -26,13 +27,13 @@ class Activity:ObservableObject{
         activityDescription: String = "",
         duration: Int = 60,
         sortIndex:Int = 99,
-        parent:ActivitySet? = nil
+        updateCallback:@escaping ()->Void = {}
     ) {
         self.name = name
         self.activityDescription = activityDescription
         self.duration = duration
         self.sortIndex = sortIndex
-        self.parentActivitySet = parent
+        self.updateCallback = updateCallback
         self.formattedTime = Workout.formatDuration(for: duration)
     }
     
@@ -45,16 +46,15 @@ class Activity:ObservableObject{
         self.formattedTime = Workout.formatDuration(for: self.duration)
     }
     
-    @Transient func clone(of originalActivity:Activity){
-        self.name = originalActivity.name
-        self.activityDescription = originalActivity.activityDescription
-        self.duration = originalActivity.duration
-        self.sortIndex = originalActivity.sortIndex
-        self.updateCallback = originalActivity.updateCallback
-        self.formattedTime = Workout.formatDuration(for: self.duration)
+    @Transient static func clone(of originalActivity:Activity)->Activity{
+        let clonedActivity = Activity(
+            name:originalActivity.name,
+            activityDescription:originalActivity.activityDescription,
+            duration:originalActivity.duration,
+            sortIndex:originalActivity.sortIndex,
+            updateCallback:originalActivity.updateCallback
+        )
+        //formatted time should be called from init()
+        return clonedActivity
     }
-}
-
-extension Activity{
-    static let sampleData:Activity = Activity(name:"Push ups", duration:60, updateCallback: {})
 }

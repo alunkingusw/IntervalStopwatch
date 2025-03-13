@@ -8,7 +8,7 @@ import SwiftData
 import Foundation
 
 @Model
-class ActivitySet:ObservableObject{
+class ActivitySet:Identifiable, ObservableObject{
     var name:String
     var activitySetDescription:String
     var reps:Int8{didSet{
@@ -57,10 +57,6 @@ class ActivitySet:ObservableObject{
         self.calculateTotalDuration()
     }
     
-    func triggerUpdate(){
-        
-    }
-    
     func calculateTotalDuration() {
             var totalDuration = 0
             for activity in activities {
@@ -75,38 +71,30 @@ class ActivitySet:ObservableObject{
         formattedDuration = Workout.formatDuration(for: self.duration)
         }
 
-    @Transient func clone(of originalActivitySet:ActivitySet){
-        self.name = originalActivitySet.name
-        self.activitySetDescription = originalActivitySet.activitySetDescription
-        self.reps = originalActivitySet.reps
-        self.sortIndex = originalActivitySet.sortIndex
-        self.updateCallback = originalActivitySet.updateCallback
-        self.activities = []
+    @Transient static func clone(of originalActivitySet:ActivitySet)->ActivitySet{
+        //get the activities first to pass to the constructor
+        var clonedActivities:[Activity] = []
         for originalActivity in originalActivitySet.activities {
-            let clonedActivity = Activity(updateCallback:self.updateCallback)
-            clonedActivity.clone(of: originalActivity)
-            self.activities.append(clonedActivity)
+            clonedActivities.append(Activity.clone(of: originalActivity))
         }
-        self.updateCallback = originalActivitySet.updateCallback
+        
+        let clonedActivitySet = ActivitySet(
+            name:originalActivitySet.name,
+            activitySetDescription:originalActivitySet.activitySetDescription,
+            reps:originalActivitySet.reps,
+            sortIndex:originalActivitySet.sortIndex,
+            activities:clonedActivities,
+            updateCallback:originalActivitySet.updateCallback
+        )
+        print (clonedActivitySet.name)
+        //calculateTotalDuration() should be called on init()
+        
         //self.hasAutoRest = hasAutoRest
         //self.autoRestDuration = autoRestDuration
-        calculateTotalDuration()
+        return clonedActivitySet
     }
     
     
     
 }
 
-
-extension ActivitySet{
-    static var sampleData:ActivitySet = ActivitySet(
-        name:"Example Set",
-        activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
-        reps:2,
-        activities:[
-            Activity(name:"Push ups", duration:60, updateCallback: {}),
-            Activity(name:"Rest", duration:30, updateCallback: {}),
-            Activity(name:"Sit ups", duration:60, updateCallback: {}),
-            Activity(name:"Rest", duration:30, updateCallback: {}),
-        ], updateCallback:{})
-}

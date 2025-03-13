@@ -18,7 +18,7 @@ struct WorkoutListView: View {
                 HStack{
                     Image(systemName:"timer")
                     Text(workout.formattedDuration)
-                }
+                }.accessibilityLabel("The total workout time")
             }.font(.headline)
             HStack{
                 Text("\(workout.activitySets.count) sets")

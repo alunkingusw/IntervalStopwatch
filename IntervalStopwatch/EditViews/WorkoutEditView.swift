@@ -39,10 +39,14 @@ struct WorkoutEditView: View {
                         ForEach(workout.activitySets.sorted(by: {$0.sortIndex < $1.sortIndex})){ workoutActivitySet in
                             HStack{
                                 Image(systemName: "line.3.horizontal") // Sort handle
-                                                                    .foregroundColor(.gray)
-                                                                    .padding(.trailing, 8)
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 8).accessibilityLabel("Image indicating drag to move")
                                 ActivitySetListView(activitySet:workoutActivitySet)
-                                
+                                /*Button(action: {
+                                    print("work needed here")
+                                }) {
+                                    Image(systemName:"minus.circle.fill").foregroundStyle(.red).padding(.leading, 10)
+                                }.accessibilityLabel("Delete Activity Set")*/
                             }
                         }.onDelete(perform: deleteActivitySet).onMove(perform:moveActivitySet)
                     }
@@ -55,7 +59,7 @@ struct WorkoutEditView: View {
                                 newActivitySetName = ""
                             }
                         }) {
-                            Image(systemName: "plus.circle.fill")
+                            Image(systemName: "plus.circle.fill").accessibilityLabel("Add activity set (disabled until a name is entered)")
                         }
                         .disabled(newActivitySetName.isEmpty)
                     }

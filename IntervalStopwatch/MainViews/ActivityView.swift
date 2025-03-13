@@ -31,7 +31,7 @@ struct ActivityView: View {
                     ToolbarItem(placement:.confirmationAction){
                         Button("Edit"){
                             //we don't want to pass the whole object here
-                            editingActivity.clone(of:activity)
+                            editingActivity = Activity.clone(of:activity)
                             isPresentingEditActivityView = true
                             
                         }
@@ -39,7 +39,7 @@ struct ActivityView: View {
                 }
         }.sheet(isPresented: $isPresentingEditActivityView){
             NavigationStack{
-                ActivityEditView(activity:editingActivity)
+                ActivityEditView(activity:$editingActivity)
                     .toolbar{
                         ToolbarItem(placement:.confirmationAction){
                             Button("Save"){

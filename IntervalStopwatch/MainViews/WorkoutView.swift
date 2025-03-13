@@ -20,12 +20,8 @@ struct WorkoutView: View {
         NavigationStack{
                 List{
                     Section(header:Text("Overview")){
-                        
-                        
                         Label(workout.workoutDescription, systemImage:"info.circle")
-                        
                         Label(" \(workout.formattedDuration)", systemImage:"timer")
-                        
                     }
                     
                     Section(header:Text("Sets")){
