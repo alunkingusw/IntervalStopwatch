@@ -1,63 +1,79 @@
-//
-//  DurationSelector.swift
-//  IntervalStopwatch
-//
-//  Created by Alun King on 08/03/2025.
-//
-
 import SwiftUI
 
 struct DurationSelector: View {
-    @Binding var durationInt:Int
-    @State private var durationString:String
-    private var units:[String] = ["seconds","minutes"]
-    @State private var selection:String
-    init(durationInt: Binding<Int>) {
-        self._durationInt = durationInt
-        if durationInt.wrappedValue > 60 &&
-            durationInt.wrappedValue % 60 == 0{
-            selection = "minutes"
-            //display the string as minutes
-            self.durationString = String((durationInt.wrappedValue / 60))
-        }else{
-            selection = "seconds"
-            self.durationString = String(durationInt.wrappedValue)
-        }
+    private enum TimingOptions:String, CaseIterable, Identifiable {
+        case manual = "Manual"
+        case timed = "Timed"
+        var id:String {self.rawValue}
     }
     
+    @Binding public var seconds: Int
+    
+    private let minutesArray = [Int](0...59)
+    private let secondsArray = [Int](0...59)
+    private let secondsInMinute:Int = 60
+    
+    @State private var timingType:TimingOptions = TimingOptions.manual
+    @State private var minuteSelection = 1
+    @State private var secondSelection = 0
+    
     var body: some View {
-            HStack {
-                TextField("Duration", text: $durationString)
-                    .keyboardType(.numberPad)
-                    .onChange(of: durationString) {
-                        updateDurationInt()
-                    }
-                Spacer()
-                Picker("Units", selection: $selection) {
-                    ForEach(self.units, id: \.self) { unit in
-                        Text("\(unit)")
+        
+        VStack{
+            Picker(selection:$timingType, label:Text("Timing")){
+                ForEach(TimingOptions.allCases){ menuOption in
+                    Text(menuOption.rawValue).tag(menuOption)
+                    
+                }}.pickerStyle(.menu).onChange(of:timingType){
+                    if timingType==TimingOptions.manual{
+                        seconds = -1
                     }
                 }
-                .pickerStyle(.segmented)
-                .onChange(of: selection) {
-                    updateDurationInt()
+            if(!(timingType==TimingOptions.manual)){
+                HStack(spacing: 0) {
+                    
+                    Picker(selection: self.$minuteSelection, label: Text("")) {
+                        ForEach(0 ..< self.minutesArray.count,id:\.self) { index in
+                            Text("\(self.minutesArray[index]) m").tag(index)
+                        }
+                    }.pickerStyle(.wheel)
+                        .onChange(of: self.minuteSelection) {
+                            seconds = totalInSeconds
+                        }
+                    
+                    
+                    Picker(selection: self.self.$secondSelection, label: Text("")) {
+                        ForEach(0 ..< self.secondsArray.count,id:\.self) { index in
+                            Text("\(self.secondsArray[index]) s").tag(index)
+                        }
+                    }.pickerStyle(.wheel)
+                        .onChange(of: self.secondSelection) {                    seconds = totalInSeconds
+                        }
+                    
                 }
+                
+                
             }
         }
-
-        private func updateDurationInt() {
-            if let value = Int(durationString) {
-                if selection == "minutes" {
-                    durationInt = value * 60
-                } else {
-                    durationInt = value
-                }
-            } else {
-                durationInt = 0
-            }
+        .onAppear(perform: {
+            seconds=60
+            updatePickers()
+        })
+    }
+    
+    func updatePickers() {
+        if(seconds != -1){
+            timingType = .timed
+            minuteSelection = Int(seconds/60)
+            secondSelection = seconds%60
         }
+        
+    }
+    
+    var totalInSeconds: Int {
+        return minuteSelection *     self.secondsInMinute + secondSelection
+    }
 }
-
 #Preview {
-    DurationSelector(durationInt:.constant(600))
+    DurationSelector(seconds:.constant(600))
 }

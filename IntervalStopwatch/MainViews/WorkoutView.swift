@@ -21,6 +21,7 @@ struct WorkoutView: View {
                 List{
                     Section(header:Text("Overview")){
                         Label(workout.workoutDescription, systemImage:"info.circle")
+                        Label(workout.type, systemImage:"questionmark.circle")
                         Label(" \(workout.formattedDuration)", systemImage:"timer")
                     }
                     

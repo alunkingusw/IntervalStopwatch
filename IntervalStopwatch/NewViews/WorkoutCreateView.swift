@@ -23,7 +23,12 @@ struct WorkoutCreateView: View {
                     
                     TextField("Name", text:$workout.name)
                     TextField("Description", text:$workout.workoutDescription)
-                    
+                    Picker(selection:$workout.type, label:Text("Workout Type")){
+                        ForEach(WorkoutTypes.allCases){ menuOption in
+                            Text(menuOption.rawValue).tag(menuOption)
+                            
+                        }
+                    }.pickerStyle(.navigationLink)
                 }
                 
                 Section(header:Text("Save the workout to create sets")){

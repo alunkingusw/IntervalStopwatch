@@ -21,10 +21,10 @@ struct WorkoutListView: View {
                 }.accessibilityLabel("The total workout time")
             }.font(.headline)
             HStack{
-                Text("\(workout.activitySets.count) sets")
+                Text(workout.type)
                 
                 Spacer()
-                
+                Text("\(workout.activitySets.count) sets")
             }
             //Text("\(activitySet.activitySetDescription)")
             

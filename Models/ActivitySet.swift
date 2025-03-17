@@ -6,6 +6,7 @@
 //
 import SwiftData
 import Foundation
+import WorkoutKit
 
 @Model
 class ActivitySet:Identifiable, ObservableObject{
@@ -94,6 +95,13 @@ class ActivitySet:Identifiable, ObservableObject{
         return clonedActivitySet
     }
     
+    @Transient func exportToWorkoutKit() -> IntervalBlock{
+        var steps:[IntervalStep] = []
+        for activity in self.activities {
+            steps.append(activity.exportToWorkoutKit())
+        }
+        return IntervalBlock(steps: steps, iterations:Int(self.reps))
+    }
     
     
 }

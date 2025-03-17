@@ -10,10 +10,10 @@ import SwiftUI
 
 
 struct SortSelector: View {
-    enum SortBy {
-        case name
-        case duration
-        case sets
+    enum SortBy:String {
+        case name = "Name"
+        case duration = "Duration"
+        case sets = "Sets"
     }
     
     
@@ -22,7 +22,6 @@ struct SortSelector: View {
     
     @State var orderAscendingSelection:String = "arrow.up"{
         didSet{
-            print("hello")
             orderAscending = orderAscendingSelection == "arrow.down"
         }
     }

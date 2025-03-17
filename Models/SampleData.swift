@@ -7,85 +7,87 @@
 
 //sample data for the previews
 extension Workout{
-    static let sampleData: Workout = Workout(name:"Example workout", workoutDescription: "Example description of a workout", activitySets: [
+    static let sampleData: Workout = Workout(name:"Example workout", workoutDescription: "Example description of a workout", type:"Wheelchair", activitySets: [
         ActivitySet(
             name:"Example Set",
             activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
             reps:2,
             activities:[
-                Activity(name:"Push ups", duration:60),
-                Activity(name:"Rest", duration:30),
-                Activity(name:"Sit ups", duration:60),
-                Activity(name:"Rest", duration:30),
+                Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:60),
+                Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
+                Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:60),
+                Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
             ]),
         ActivitySet(
             name:"Another Set",
             activitySetDescription:"More description",
             reps:3,
             activities:[
-                Activity(name:"Push ups", duration:120),
-                Activity(name:"Rest", duration:60),
-                Activity(name:"Sit ups", duration:120),
-                Activity(name:"Rest", duration:60),
+                Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:120),
+                Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:60),
+                Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:120),
+                Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:60),
             ])
     ])
     static let multipleSampleData: [Workout] = [
         Workout(name:"Example workout",
                 workoutDescription: "Example description of a workout",
+                type:"Running",
                 activitySets: [
                     ActivitySet(
                         name:"Example Set",
                         activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
                         reps:2,
                         activities:[
-                            Activity(name:"Push ups", duration:60),
-                            Activity(name:"Rest", duration:30),
-                            Activity(name:"Sit ups", duration:60),
-                            Activity(name:"Rest", duration:30),
+                            Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:60),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
+                            Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:60),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
                         ]),
                     ActivitySet(
                         name:"Another Set",
                         activitySetDescription:"More description",
                         reps:3,
                         activities:[
-                            Activity(name:"Push ups", duration:120),
-                            Activity(name:"Rest", duration:60),
-                            Activity(name:"Sit ups", duration:120),
-                            Activity(name:"Rest", duration:60),
+                            Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:120),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:60),
+                            Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:120),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:60),
                         ])
                 ]),
         Workout(name:"Another workout",
                 workoutDescription: "HIIT Class",
+                type:"HIIT",
                 activitySets: [
                     ActivitySet(
                         name:"Warm up",
                         activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
                         reps:2,
                         activities:[
-                            Activity(name:"Push ups", duration:60),
-                            Activity(name:"Rest", duration:30),
-                            Activity(name:"Sit ups", duration:60),
-                            Activity(name:"Rest", duration:30),
+                            Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:60),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
+                            Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:60),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
                         ]),
                     ActivitySet(
                         name:"Workout Set",
                         activitySetDescription:"More description",
                         reps:3,
                         activities:[
-                            Activity(name:"Push ups", duration:120),
-                            Activity(name:"Rest", duration:180),
-                            Activity(name:"Sit ups", duration:120),
-                            Activity(name:"Rest", duration:180),
+                            Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:120),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:180),
+                            Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:120),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:180),
                         ]),
                     ActivitySet(
                         name:"Cool Down",
                         activitySetDescription:"More description",
                         reps:3,
                         activities:[
-                            Activity(name:"Push ups", duration:120),
-                            Activity(name:"Rest", duration:60),
-                            Activity(name:"Sit ups", duration:60),
-                            Activity(name:"Rest", duration:60),
+                            Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:120),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:60),
+                            Activity(name:"Sit ups", type:ActivityType.rest.rawValue, duration:60),
+                            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:60),
                         ])
                 ])
         ]
@@ -97,14 +99,14 @@ extension ActivitySet{
         activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
         reps:2,
         activities:[
-            Activity(name:"Push ups", duration:60),
-            Activity(name:"Rest", duration:30),
-            Activity(name:"Sit ups", duration:60),
-            Activity(name:"Rest", duration:30),
+            Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:60),
+            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
+            Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:60),
+            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
         ])
 }
 
 
 extension Activity{
-    static let sampleData:Activity = Activity(name:"Push ups", duration:60)
+    static let sampleData:Activity = Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:60)
 }

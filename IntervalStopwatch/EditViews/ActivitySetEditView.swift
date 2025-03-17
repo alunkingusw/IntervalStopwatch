@@ -10,10 +10,11 @@ import SwiftUI
 struct ActivitySetEditView: View {
     @Binding var activitySet:ActivitySet
     @State private var isShowingDeleteAlert = false
+    
     //@Environment(\.dismiss) var dismiss
     
     @State var newActivityName = ""
-    @State var newActivityDuration = 60
+    @State var newActivityDuration = -1
     var body: some View {
         NavigationStack{
             Form{
@@ -51,24 +52,33 @@ struct ActivitySetEditView: View {
                         HStack {
                             TextField("New Activity", text: $newActivityName)
                             
+                            
                             Button(action: {
                                 withAnimation {
+                                    var newActivityType = ActivityType.work.rawValue
+                                    if(newActivityName.caseInsensitiveCompare("rest") == ComparisonResult.orderedSame || newActivityName.caseInsensitiveCompare("recovery") == ComparisonResult.orderedSame){
+                                        newActivityType = ActivityType.rest.rawValue
+                                    }
                                     let activity = Activity(
                                         name:newActivityName,
+                                        type:newActivityType,
                                         duration:newActivityDuration,
                                         sortIndex:activitySet.activities.count,
                                         updateCallback:activitySet.updateCallback
                                     )
                                     activitySet.activities.append(activity)
                                     newActivityName = ""
-                                    newActivityDuration = 60
+                                    newActivityDuration = -1
                                 }
                             }) {
                                 Image(systemName: "plus.circle.fill").accessibilityLabel("Add activity (disabled until a name is entered)")
                             }
                             .disabled(newActivityName.isEmpty)
                         }
-                        DurationSelector(durationInt:$newActivityDuration).opacity(newActivityName.isEmpty ? 0 : 1)
+                        if !newActivityName.isEmpty{
+                            DurationSelector(seconds:$newActivityDuration)
+                            
+                        }
                     }
                 }
                 
