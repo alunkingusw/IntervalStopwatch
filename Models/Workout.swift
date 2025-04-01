@@ -22,6 +22,7 @@ class Workout:Identifiable, ObservableObject{
     }}
     //create a blank callback for use when the workout children update
     @Transient var updateCallback = {}
+    @Transient var plan:WorkoutPlan = WorkoutPlan(.custom(Workout.createSimpleWorkout()))
     
     init(
         name: String = "Workout",

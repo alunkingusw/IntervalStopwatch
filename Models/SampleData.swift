@@ -5,6 +5,8 @@
 //  Created by Alun King on 10/03/2025.
 //
 
+import WorkoutKit
+
 //sample data for the previews
 extension Workout{
     static let sampleData: Workout = Workout(name:"Example workout", workoutDescription: "Example description of a workout", type:"Wheelchair", activitySets: [
@@ -91,6 +93,55 @@ extension Workout{
                         ])
                 ])
         ]
+    
+    
+        static func createSimpleWorkout() -> CustomWorkout {
+            // Warmup step.
+            let warmupStep = WorkoutStep()
+            
+            // Block 1.
+            let block1 = workoutBlockOne()
+            
+            // Block 2.
+            let block2 = workoutBlockTwo()
+
+            // Cooldown step.
+            let cooldownStep = WorkoutStep(goal: .time(5, .minutes))
+            
+            return CustomWorkout(activity: .other,
+                                 location: .outdoor,
+                                 displayName: "Example Workout",
+                                 warmup: warmupStep,
+                                 blocks: [block1, block2],
+                                 cooldown: cooldownStep)
+        }
+        
+        static func workoutBlockOne() -> IntervalBlock {
+            // Work step 1.
+            var workStep1 = IntervalStep(.work)
+            workStep1.step.goal = .time(2, .minutes)
+
+            // Recovery step.
+            var recoveryStep1 = IntervalStep(.recovery)
+            recoveryStep1.step.goal = .time(2, .minutes)
+            
+            return IntervalBlock(steps: [workStep1, recoveryStep1],
+                                 iterations: 4)
+        }
+        
+        static func workoutBlockTwo() -> IntervalBlock {
+            // Work step 2.
+            var workStep2 = IntervalStep(.work)
+            workStep2.step.goal = .time(2, .minutes)
+
+            // Recovery step.
+            var recoveryStep2 = IntervalStep(.recovery)
+            recoveryStep2.step.goal = .time(30, .seconds)
+            
+            // Block with two iterations.
+            return IntervalBlock(steps: [workStep2, recoveryStep2],
+                                 iterations: 2)
+        }
 }
 
 extension ActivitySet{

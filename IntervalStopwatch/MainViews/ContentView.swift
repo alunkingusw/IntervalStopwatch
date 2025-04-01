@@ -1,4 +1,5 @@
 import SwiftData
+import WorkoutKit
 import SwiftUI
 
 struct ContentView: View {
@@ -76,8 +77,10 @@ struct ContentView: View {
             WorkoutCreateView()
         }
         .onAppear {
+            //this can be moved to the navigation link - see here: https://stackoverflow.com/questions/73939238/how-to-perform-action-before-executing-navigationlink
             for workout in workouts {
                 workout.updateCallback = workout.calculateWorkoutDuration
+                workout.plan =  WorkoutPlan(.custom(workout.exportToWorkoutKit()))
             }
         }
         .searchable(text: $searchText, prompt: "Search Workouts")
