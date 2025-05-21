@@ -20,6 +20,9 @@ class Workout:Identifiable, ObservableObject{
     @Relationship(deleteRule: .cascade) var activitySets:[ActivitySet]{didSet{
         calculateWorkoutDuration()
     }}
+    @Transient var sortedActivitySets: [ActivitySet] {
+        activitySets.sorted(by: { $0.sortIndex < $1.sortIndex })
+    }
     //create a blank callback for use when the workout children update
     @Transient var updateCallback = {}
     @Transient var plan:WorkoutPlan = WorkoutPlan(.custom(Workout.createSimpleWorkout()))
@@ -103,7 +106,7 @@ class Workout:Identifiable, ObservableObject{
         let workoutType:HKWorkoutActivityType = .other
         let workoutLocation:HKWorkoutSessionLocationType = .unknown
         var intervalBlocks:[IntervalBlock] = []
-        for activitySet in self.activitySets{
+        for activitySet in self.sortedActivitySets{
             intervalBlocks.append(activitySet.exportToWorkoutKit())
         }
         

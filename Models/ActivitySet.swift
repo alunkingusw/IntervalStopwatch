@@ -22,6 +22,9 @@ class ActivitySet:Identifiable, ObservableObject{
     var formattedDuration:String = ""
     var formattedRepDuration:String = ""
     var duration:Int = 0
+    @Transient var sortedActivities: [Activity] {
+        activities.sorted(by: { $0.sortIndex < $1.sortIndex })
+    }
     
     @Relationship(deleteRule: .cascade) var activities:[Activity]{didSet{
         calculateTotalDuration()
@@ -97,7 +100,7 @@ class ActivitySet:Identifiable, ObservableObject{
     
     @Transient func exportToWorkoutKit() -> IntervalBlock{
         var steps:[IntervalStep] = []
-        for activity in self.activities {
+        for activity in self.sortedActivities {
             steps.append(activity.exportToWorkoutKit())
         }
         return IntervalBlock(steps: steps, iterations:Int(self.reps))

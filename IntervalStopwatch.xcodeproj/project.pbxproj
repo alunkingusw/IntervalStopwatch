@@ -47,6 +47,7 @@
 				ActivitySet.swift,
 				SampleData.swift,
 				Workout.swift,
+				WorkoutTimer.swift,
 			);
 			target = 5DA562D32D6C7DF3007A6BA0 /* IntervalStopwatch Watch App */;
 		};

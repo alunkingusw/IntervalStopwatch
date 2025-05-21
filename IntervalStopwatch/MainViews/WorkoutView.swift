@@ -49,10 +49,10 @@ struct WorkoutView: View {
                     if(workout.activitySets.count == 0){
                         Text("Click edit to add workout sets").font(.subheadline)
                     }else{
-                        Button("Start Workout", systemImage: "timer"){
-                            //Navigate to workout screen here
-                            dismiss()
-                            
+                        NavigationLink{
+                            WorkoutTimerView(viewModel: WorkoutTimer(workout:workout))
+                        }label:{
+                            Text("Start Workout")
                         }
                         .font(.headline)
                         Button("Preview in WorkoutKit", systemImage: "stopwatch"){

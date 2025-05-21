@@ -10,6 +10,7 @@ struct ContentView: View {
     @Query var workouts: [Workout]
     @State private var isPresentingNewWorkoutView = false
     @State var orderAscendingSelection: String = "arrowtriangle.up"
+    @State private var path = NavigationPath()
 
     private var orderAscendingOptions: [String] = ["arrowtriangle.up", "arrowtriangle.down"]
     private var orderByOptions: [String] = ["Name", "Duration", "Sets"]
@@ -31,7 +32,7 @@ struct ContentView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path:$path) {
             VStack {
                 HStack {
                     Picker("Field", selection: $orderBy) {
@@ -56,6 +57,18 @@ struct ContentView: View {
                 List(sortedWorkouts.filter {
                     searchText == "" || $0.name.lowercased().contains(searchText.lowercased())
                 }) { workout in
+                    /*Button("Go to view 2") {
+                        path.append("workout")
+                    }
+                    .navigationDestination(for: String.self) { route in
+                        switch route {
+                        case "workout":
+                            WorkoutListView(workout: workout)
+                        default:
+                            WorkoutListView(workout: workout)
+                        }
+                    }*/
+                
                     NavigationLink {
                         WorkoutView(workout: workout)
                     } label: {
