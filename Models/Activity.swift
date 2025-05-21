@@ -16,12 +16,12 @@ class Activity:Identifiable, ObservableObject{
     var activityDescription:String
     var type:String
     var sortIndex:Int
+    @Transient var parentActivitySet: ActivitySet?
     var duration:Int{didSet{
         self.formattedTime = Workout.formatDuration(for: duration)
         //if we have a parent, inform it that the duration of the activity has changed.
         parentActivitySet?.triggerUpdate()
     }}
-    @Transient var updateCallback:()->Void = {}
     
     var formattedTime:String = ""
     
@@ -31,14 +31,12 @@ class Activity:Identifiable, ObservableObject{
         type:String = ActivityType.work.rawValue,
         duration: Int = 60,
         sortIndex:Int = 99,
-        updateCallback:@escaping ()->Void = {}
     ) {
         self.name = name
         self.activityDescription = activityDescription
         self.type = type
         self.duration = duration
         self.sortIndex = sortIndex
-        self.updateCallback = updateCallback
         self.formattedTime = Workout.formatDuration(for: duration)
     }
     
@@ -48,7 +46,6 @@ class Activity:Identifiable, ObservableObject{
         self.type = editedActivity.type
         self.sortIndex = editedActivity.sortIndex
         self.duration = editedActivity.duration
-        self.updateCallback = editedActivity.updateCallback
         self.formattedTime = Workout.formatDuration(for: self.duration)
     }
     
@@ -59,7 +56,6 @@ class Activity:Identifiable, ObservableObject{
             type:originalActivity.type,
             duration:originalActivity.duration,
             sortIndex:originalActivity.sortIndex,
-            updateCallback:originalActivity.updateCallback
         )
         //formatted time should be called from init()
         return clonedActivity
