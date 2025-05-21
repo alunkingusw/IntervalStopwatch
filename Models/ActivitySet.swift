@@ -12,9 +12,7 @@ import WorkoutKit
 class ActivitySet:Identifiable, ObservableObject{
     var name:String
     var activitySetDescription:String
-    var reps:Int8{didSet{
-        calculateTotalDuration()
-    }}
+    var reps:Int8
     var sortIndex:Int
     @Transient var parentWorkout:Workout?
     
@@ -32,9 +30,7 @@ class ActivitySet:Identifiable, ObservableObject{
         parentWorkout?.calculateWorkoutDuration()
     }
     
-    @Relationship(deleteRule: .cascade) var activities:[Activity]{didSet{
-        calculateTotalDuration()
-    }}
+    @Relationship(deleteRule: .cascade) var activities:[Activity]
     
     init(name: String = "Workout Set",
          activitySetDescription: String = "",
@@ -61,6 +57,7 @@ class ActivitySet:Identifiable, ObservableObject{
         self.sortIndex = editedActivitySet.sortIndex
         self.activities = editedActivitySet.activities
         self.calculateTotalDuration()
+        triggerUpdate()
     }
     
     func calculateTotalDuration() {
@@ -91,7 +88,6 @@ class ActivitySet:Identifiable, ObservableObject{
             sortIndex:originalActivitySet.sortIndex,
             activities:clonedActivities,
         )
-        print (clonedActivitySet.name)
         //calculateTotalDuration() should be called on init()
         
         //self.hasAutoRest = hasAutoRest

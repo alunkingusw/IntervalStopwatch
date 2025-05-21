@@ -107,9 +107,8 @@ struct WorkoutView: View {
                 dismiss()
             }
         }.onAppear{
-            for activitySet in workout.activitySets{
-                activitySet.updateCallback = workout.updateCallback
-            }
+            //set up the callbacks so we are notified of any edits
+            workout.bindChildren()
         }
     }
 }

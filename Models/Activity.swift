@@ -20,6 +20,7 @@ class Activity:Identifiable, ObservableObject{
     var duration:Int{didSet{
         self.formattedTime = Workout.formatDuration(for: duration)
         //if we have a parent, inform it that the duration of the activity has changed.
+        print("updated duration")
         parentActivitySet?.triggerUpdate()
     }}
     
@@ -47,6 +48,7 @@ class Activity:Identifiable, ObservableObject{
         self.sortIndex = editedActivity.sortIndex
         self.duration = editedActivity.duration
         self.formattedTime = Workout.formatDuration(for: self.duration)
+        parentActivitySet?.triggerUpdate()
     }
     
     @Transient static func clone(of originalActivity:Activity)->Activity{

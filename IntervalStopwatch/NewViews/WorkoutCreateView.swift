@@ -43,7 +43,6 @@ struct WorkoutCreateView: View {
                 }
                 ToolbarItem(placement:.confirmationAction){
                     Button("Save"){
-                        workout.updateCallback = workout.calculateWorkoutDuration
                         modelContext.insert(workout)
                         dismiss()
                     }

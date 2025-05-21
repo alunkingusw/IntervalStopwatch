@@ -92,7 +92,6 @@ struct ContentView: View {
         .onAppear {
             //this can be moved to the navigation link - see here: https://stackoverflow.com/questions/73939238/how-to-perform-action-before-executing-navigationlink
             for workout in workouts {
-                workout.updateCallback = workout.calculateWorkoutDuration
                 workout.plan =  WorkoutPlan(.custom(workout.exportToWorkoutKit()))
             }
         }

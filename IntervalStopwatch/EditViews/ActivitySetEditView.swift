@@ -63,9 +63,9 @@ struct ActivitySetEditView: View {
                                         name:newActivityName,
                                         type:newActivityType,
                                         duration:newActivityDuration,
-                                        sortIndex:activitySet.activities.count,
-                                        updateCallback:activitySet.updateCallback
+                                        sortIndex:activitySet.activities.count
                                     )
+                                    activity.parentActivitySet = activitySet
                                     activitySet.activities.append(activity)
                                     newActivityName = ""
                                     newActivityDuration = -1

@@ -10,7 +10,7 @@ import SwiftUI
 struct ActivityView: View {
     //basic information
     @ObservedObject var activity:Activity
-    @State private var editingActivity = Activity(name:"", updateCallback: {})
+    @State private var editingActivity = Activity(name:"")
     //also need to have the duration
     @State var isPresentingEditActivityView:Bool = false
     
@@ -45,7 +45,6 @@ struct ActivityView: View {
                             Button("Save"){
                                 isPresentingEditActivityView = false
                                 activity.save(editedActivity:editingActivity)
-                                activity.updateCallback()
                             }
                         }
                         ToolbarItem(placement:.cancellationAction){
