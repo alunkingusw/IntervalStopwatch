@@ -7,9 +7,9 @@
 // the necessary fields for it to be displayed and played
 // through as a workout on screen.
 
+import AVFoundation
 import Foundation
-import Combine
-import SwiftUI
+
 
 class WorkoutTimer: ObservableObject {
     @Published var currentSetIndex = 0
@@ -18,9 +18,13 @@ class WorkoutTimer: ObservableObject {
     @Published var timeRemaining = 0
     @Published var isRunning = false
     @Published var isFinished = false
+    // audio
+    let synthesizer = AVSpeechSynthesizer()
+    
 
     let workout: Workout
     private var timer: Timer?
+    
     
     var currentSet: ActivitySet? {
         guard currentSetIndex < workout.activitySets.count else { return nil }
@@ -33,6 +37,7 @@ class WorkoutTimer: ObservableObject {
     }
 
     init(workout: Workout) {
+
         self.workout = workout
         prepareNextActivity()
     }
@@ -42,6 +47,7 @@ class WorkoutTimer: ObservableObject {
         isRunning = true
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             self.tick()
+            
         }
     }
 
@@ -65,6 +71,10 @@ class WorkoutTimer: ObservableObject {
             nextActivity()
             return
         }
+        // it's 31 so that it clicks to 30 half way through the sentence.
+        if timeRemaining == 31 {
+            speak("Thirty Seconds left!")
+        }
         timeRemaining -= 1
     }
 
@@ -78,13 +88,16 @@ class WorkoutTimer: ObservableObject {
 
     private func nextActivity() {
         guard let set = currentSet else {
+            speak("Finished!")
             finishWorkout()
             return
         }
 
         if currentActivityIndex + 1 < set.activities.count {
+            speak("Next Activity!")
             currentActivityIndex += 1
         } else if currentRep < set.reps {
+            speak("next rep!")
             currentActivityIndex = 0
             currentRep += 1
         } else {
@@ -105,4 +118,14 @@ class WorkoutTimer: ObservableObject {
         isRunning = false
         isFinished = true
     }
+    // adds a countdown voice timer
+    private func speak(_ message: String) {
+        let utterance = AVSpeechUtterance(string: message)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        synthesizer.speak(utterance)
+    }
+   
+       
 }
+
+

@@ -52,6 +52,10 @@ struct WorkoutTimerView: View {
             }
         }
         .padding()
+        .onDisappear {
+            // stops the timer as it will continue to run in the background
+            viewModel.pause()
+        }
     }
 
     func timeString(from seconds: Int) -> String {
