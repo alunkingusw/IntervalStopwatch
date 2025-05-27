@@ -53,6 +53,7 @@ struct WorkoutTimerView: View {
         }
         .padding()
         .onDisappear {
+            //MARK: change by Huw
             // stops the timer as it will continue to run in the background
             viewModel.pause()
         }

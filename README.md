@@ -1,10 +1,24 @@
-# Interval Stop Watch Timer.
 
+<p align="center">
+<img src="/Docs/Images/READMEBanner.jpg" alt="banner">
+<p\>
 
+## Table of Contents
 
-# Huw's Change Log
-
-## 26th May 2025
-- added voice intervals at 30 seconds and at the end of each rep, set.
-- ondisappear {} added to stop time in the background.
+- [Model]()
+- [Views]()
+- [View model]()
+- [Change Log]()
   
+---
+## Features
+
+---
+
+## Summary
+
+Alun's interval Stopwatch is...
+
+---
+
+

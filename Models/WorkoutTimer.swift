@@ -73,6 +73,7 @@ class WorkoutTimer: ObservableObject {
         }
         // it's 31 so that it clicks to 30 half way through the sentence.
         if timeRemaining == 31 {
+            //MARK: change
             speak("Thirty Seconds left!")
         }
         timeRemaining -= 1
@@ -88,15 +89,18 @@ class WorkoutTimer: ObservableObject {
 
     private func nextActivity() {
         guard let set = currentSet else {
+            //MARK: change
             speak("Finished!")
             finishWorkout()
             return
         }
 
         if currentActivityIndex + 1 < set.activities.count {
+            //MARK: change
             speak("Next Activity!")
             currentActivityIndex += 1
         } else if currentRep < set.reps {
+            //MARK: change
             speak("next rep!")
             currentActivityIndex = 0
             currentRep += 1
@@ -118,6 +122,7 @@ class WorkoutTimer: ObservableObject {
         isRunning = false
         isFinished = true
     }
+    //MARK: change by Huw
     // adds a countdown voice timer
     private func speak(_ message: String) {
         let utterance = AVSpeechUtterance(string: message)
