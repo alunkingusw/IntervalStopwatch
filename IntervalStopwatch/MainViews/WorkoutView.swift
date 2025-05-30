@@ -10,18 +10,18 @@ import WorkoutKit
 
 struct WorkoutView: View {
     //basic information
-    @ObservedObject var workout:Workout
+    @ObservedObject var workout: Workout
     @State var dismissBool:Bool = false
     @State var isWorkoutPreviewVisible = false
     //create a blank workout
-    @State private var editingWorkout = Workout(name:"")
+    @State private var editingWorkout = Workout(name: "")
     @State private var isPresentingEditWorkoutView = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        NavigationStack{
-            VStack{
-            List{
+        NavigationStack {
+            VStack {
+            List {
                 Section(header:Text("Overview")){
                     Label(workout.workoutDescription, systemImage:"info.circle")
                     Label(workout.type, systemImage:"questionmark.circle")
@@ -45,7 +45,7 @@ struct WorkoutView: View {
                     }
                     
                 }
-                Section{
+                Section{ // display if no Sets are availble.
                     if(workout.activitySets.count == 0){
                         Text("Click edit to add workout sets").font(.subheadline)
                     }else{
@@ -111,6 +111,7 @@ struct WorkoutView: View {
                 activitySet.updateCallback = workout.updateCallback
             }
         }
+
     }
 }
 
