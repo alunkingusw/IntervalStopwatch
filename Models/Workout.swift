@@ -23,8 +23,8 @@ class Workout:Identifiable, ObservableObject{
     @Transient var sortedActivitySets: [ActivitySet] {
         activitySets.sorted(by: { $0.sortIndex < $1.sortIndex })
     }
-    //create a blank callback for use when the workout children update
-    @Transient var updateCallback = {}
+    
+    
     @Transient var plan:WorkoutPlan = WorkoutPlan(.custom(Workout.createSimpleWorkout()))
     
     init(
@@ -37,8 +37,20 @@ class Workout:Identifiable, ObservableObject{
         self.workoutDescription = workoutDescription
         self.type = type
         self.activitySets = activitySets
-        self.updateCallback = {self.calculateWorkoutDuration()}
         self.calculateWorkoutDuration()
+    }
+    
+    /*
+     * Call this function when we load a workout for viewing,
+     * so there is a callback if anything gets edited.
+     */
+    func bindChildren() {
+        for activitySet in activitySets {
+            activitySet.parentWorkout = self
+            for activity in activitySet.activities {
+                activity.parentActivitySet = activitySet
+            }
+        }
     }
     
     
@@ -106,6 +118,7 @@ class Workout:Identifiable, ObservableObject{
         let workoutType:HKWorkoutActivityType = .other
         let workoutLocation:HKWorkoutSessionLocationType = .unknown
         var intervalBlocks:[IntervalBlock] = []
+        //we retrieve the sorted activity sets so that the order is based on sortIndex
         for activitySet in self.sortedActivitySets{
             intervalBlocks.append(activitySet.exportToWorkoutKit())
         }
@@ -113,6 +126,7 @@ class Workout:Identifiable, ObservableObject{
         return CustomWorkout(activity: workoutType, location:workoutLocation, displayName:self.name, blocks:intervalBlocks)
     }
 }
+/* These workout types are taken from Apple HealthKit */
 enum WorkoutTypes:String, CaseIterable, Identifiable{
     case preparationAndRecovery = "Recovery"
     case flexibility = "Flexibility"

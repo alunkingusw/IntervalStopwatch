@@ -12,10 +12,9 @@ import WorkoutKit
 class ActivitySet:Identifiable, ObservableObject{
     var name:String
     var activitySetDescription:String
-    var reps:Int8{didSet{
-        calculateTotalDuration()
-    }}
+    var reps:Int8
     var sortIndex:Int
+    @Transient var parentWorkout:Workout?
     
     //var hasAutoRest:Bool
     //var autoRestDuration:Int
@@ -26,10 +25,12 @@ class ActivitySet:Identifiable, ObservableObject{
         activities.sorted(by: { $0.sortIndex < $1.sortIndex })
     }
     
-    @Relationship(deleteRule: .cascade) var activities:[Activity]{didSet{
+    func triggerUpdate() {
         calculateTotalDuration()
-    }}
-    @Transient var updateCallback:()->Void = {}
+        parentWorkout?.calculateWorkoutDuration()
+    }
+    
+    @Relationship(deleteRule: .cascade) var activities:[Activity]
     
     init(name: String = "Workout Set",
          activitySetDescription: String = "",
@@ -38,14 +39,12 @@ class ActivitySet:Identifiable, ObservableObject{
          //hasAutoRest:Bool= false,
          //autoRestDuration:Int = 0,
          activities: [Activity] = [],
-         updateCallback:@escaping ()->Void = {}
     ) {
         self.name = name
         self.activitySetDescription = activitySetDescription
         self.reps = reps
         self.activities = activities
         self.sortIndex = sortIndex
-        self.updateCallback = updateCallback
         //self.hasAutoRest = hasAutoRest
         //self.autoRestDuration = autoRestDuration
         calculateTotalDuration()
@@ -57,8 +56,8 @@ class ActivitySet:Identifiable, ObservableObject{
         self.reps = editedActivitySet.reps
         self.sortIndex = editedActivitySet.sortIndex
         self.activities = editedActivitySet.activities
-        self.updateCallback = editedActivitySet.updateCallback
         self.calculateTotalDuration()
+        triggerUpdate()
     }
     
     func calculateTotalDuration() {
@@ -88,9 +87,7 @@ class ActivitySet:Identifiable, ObservableObject{
             reps:originalActivitySet.reps,
             sortIndex:originalActivitySet.sortIndex,
             activities:clonedActivities,
-            updateCallback:originalActivitySet.updateCallback
         )
-        print (clonedActivitySet.name)
         //calculateTotalDuration() should be called on init()
         
         //self.hasAutoRest = hasAutoRest
