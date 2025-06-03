@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="/Docs/Images/READMEBanner.jpg" alt="banner">
+<img src="/Docs/Images/alunsIntervalStopwatch.png" alt="banner">
 <p\>
 
 ## Table of Contents
