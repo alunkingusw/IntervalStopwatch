@@ -10,6 +10,7 @@ import WorkoutKit
 
 @Model
 class ActivitySet:Identifiable, ObservableObject{
+    var id=UUID()
     var name:String
     var activitySetDescription:String
     var reps:Int8

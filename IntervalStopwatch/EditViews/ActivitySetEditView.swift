@@ -15,6 +15,7 @@ struct ActivitySetEditView: View {
     
     @State var newActivityName = ""
     @State var newActivityDuration = -1
+    
     var body: some View {
         NavigationStack{
             Form{
@@ -47,6 +48,8 @@ struct ActivitySetEditView: View {
                                 }.accessibilityLabel("Delete Activity Set")*/
                             }
                         }.onDelete(perform: deleteActivity).onMove(perform:moveActivity)
+                    }.onAppear {
+                        activitySet.activities.sort { $0.sortIndex < $1.sortIndex }
                     }
                     VStack{
                         HStack {

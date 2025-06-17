@@ -12,6 +12,7 @@ import HealthKit
 
 @Model
 class Workout:Identifiable, ObservableObject{
+    var id=UUID()
     var name:String
     var workoutDescription:String
     var type:String
