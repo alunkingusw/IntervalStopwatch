@@ -17,19 +17,30 @@ struct WorkoutTimerView: View {
                     .font(.largeTitle)
                     .foregroundColor(.green)
             } else {
-                Text(viewModel.currentActivity?.name ?? "No Activity")
-                    .font(.title)
-                    .padding()
-
                 Text(viewModel.currentActivity?.activityDescription ?? "")
                     .font(.subheadline)
 
                 Text(viewModel.currentActivity?.type ?? "")
                     .font(.headline)
                     .foregroundColor(.secondary)
-
-                Text(timeString(from: viewModel.timeRemaining))
-                    .font(.system(size: 60, weight: .bold, design: .monospaced))
+                Circle()
+                    .strokeBorder(lineWidth: 24)
+                    .overlay {
+                        VStack {
+                            Text(viewModel.currentActivity?.name ?? "No Activity")
+                                .font(.title)
+                            Text(timeString(from: viewModel.timeRemaining))
+                                .font(.system(size: 60, weight: .bold, design: .monospaced))
+                        }
+                        .accessibilityElement(children: .combine)
+                    }
+                    .overlay  {
+                        ActivityArc(activityIndex: viewModel.currentActivityIndex, totalActivities: viewModel.currentSet?.activities.count ?? 0)
+                                .rotation(Angle(degrees: -90))
+                                .stroke(Color.red, lineWidth: 12)
+                    }
+                    .padding(.horizontal)
+                
 
                 Text("Set \(viewModel.currentSetIndex + 1) of \(viewModel.workout.activitySets.count)")
                 Text("Rep \(viewModel.currentRep)")
