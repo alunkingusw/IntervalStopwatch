@@ -29,6 +29,7 @@ struct ActivityEditView: View {
                             Text(type.rawValue).tag(type)
                         }
                     }.pickerStyle(.segmented)
+                    
                     DurationSelector(seconds:$activity.duration)
                     
                 }

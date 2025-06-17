@@ -56,7 +56,6 @@ struct DurationSelector: View {
             }
         }
         .onAppear(perform: {
-            seconds=60
             updatePickers()
         })
     }
