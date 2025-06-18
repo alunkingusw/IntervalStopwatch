@@ -36,14 +36,15 @@ struct WorkoutTimerView: View {
                     }
                     .overlay  {
                         ActivityArc(activityIndex: viewModel.currentActivityIndex, totalActivities: viewModel.currentSet?.activities.count ?? 0)
-                                .rotation(Angle(degrees: -90))
-                                .stroke(Color.red, lineWidth: 12)
+                                .rotation(Angle(degrees: -90))//ensures circle starts at the top
+                                .stroke(style: StrokeStyle(lineWidth: 12, lineCap: .round)).foregroundStyle(.green)
                     }
                     .padding(.horizontal)
-                
+                RepDotIndicator(currentRep: viewModel.currentRep-1, totalReps: Int(viewModel.currentSet?.reps ?? 0))
+
 
                 Text("Set \(viewModel.currentSetIndex + 1) of \(viewModel.workout.activitySets.count)")
-                Text("Rep \(viewModel.currentRep)")
+                
 
                 HStack {
                     if viewModel.isRunning {

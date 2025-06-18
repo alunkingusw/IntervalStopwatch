@@ -15,7 +15,7 @@ extension Workout{
             activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
             reps:2,
             activities:[
-                Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:60),
+                Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:10),
                 Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
                 Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:60),
                 Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
@@ -66,7 +66,7 @@ extension Workout{
                         activitySetDescription:"Warm up for everyone doing the workout and this is what happens when the string is really long",
                         reps:2,
                         activities:[
-                            Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:60),
+                            Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:10),
                             Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
                             Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:60),
                             Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:30),
