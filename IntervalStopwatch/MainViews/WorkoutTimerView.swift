@@ -23,6 +23,7 @@ struct WorkoutTimerView: View {
                 Text(viewModel.currentActivity?.type ?? "")
                     .font(.headline)
                     .foregroundColor(.secondary)
+                
                 Circle()
                     .strokeBorder(lineWidth: 24)
                     .overlay {
@@ -31,6 +32,10 @@ struct WorkoutTimerView: View {
                                 .font(.title)
                             Text(timeString(from: viewModel.timeRemaining))
                                 .font(.system(size: 60, weight: .bold, design: .monospaced))
+                            if(viewModel.currentActivity?.duration == -1){
+                                Button("Next") { viewModel.nextActivity() }
+                                    .buttonStyle(.borderedProminent)
+                            }
                         }
                         .accessibilityElement(children: .combine)
                     }

@@ -18,6 +18,7 @@ class WorkoutTimer: ObservableObject {
     @Published var timeRemaining = 0
     @Published var isRunning = false
     @Published var isFinished = false
+    @Published var manualActivity:Bool = false
     // audio
     let synthesizer = AVSpeechSynthesizer()
     
@@ -67,7 +68,8 @@ class WorkoutTimer: ObservableObject {
     }
 
     func tick() {
-        guard timeRemaining > 0 else {
+        //also check for manual activities here
+        guard timeRemaining > 0 || currentActivity?.duration == -1 else {
             nextActivity()
             return
         }
@@ -76,18 +78,30 @@ class WorkoutTimer: ObservableObject {
             //MARK: change
             speak("Thirty Seconds left!")
         }
-        timeRemaining -= 1
+        if currentActivity?.duration == -1{
+            timeRemaining += 1
+        }else{
+            timeRemaining -= 1
+        }
     }
-
+    
+    /**
+        This function is called when the activity has loaded, this just sets up the related time and any other UI bits if needed
+     */
     private func prepareNextActivity() {
         if let activity = currentActivity {
-            timeRemaining = activity.duration
+            //check if this is a manual activity
+            if activity.duration == -1{
+                timeRemaining = 0
+            }else{
+                timeRemaining = activity.duration
+            }
         } else {
             finishWorkout()
         }
     }
 
-    private func nextActivity() {
+    func nextActivity() {
         guard let set = currentSet else {
             //MARK: change
             speak("Finished!")
