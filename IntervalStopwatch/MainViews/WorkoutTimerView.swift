@@ -4,11 +4,15 @@
 //
 //  Created by Alun King on 11/05/2025.
 // This view shows the timer at the top for the workout.
+// MARK: Huw: bigger start stop button
 
 import SwiftUI
 
 struct WorkoutTimerView: View {
     @StateObject var viewModel: WorkoutTimer
+    
+    //removed the "back chevron and placed button instead.
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         VStack(spacing: 20) {
@@ -45,27 +49,40 @@ struct WorkoutTimerView: View {
                                 .stroke(style: StrokeStyle(lineWidth: 12, lineCap: .round)).foregroundStyle(.green)
                     }
                     .padding(.horizontal)
-                RepDotIndicator(currentRep: viewModel.currentRep-1, totalReps: Int(viewModel.currentSet?.reps ?? 0))
+                RepDotIndicator(currentRep: viewModel.currentRep - 1, totalReps: Int(viewModel.currentSet?.reps ?? 0))
 
 
                 Text("Set \(viewModel.currentSetIndex + 1) of \(viewModel.workout.activitySets.count)")
                 
 
-                HStack {
                     if viewModel.isRunning {
-                        Button("Pause") { viewModel.pause() }
-                            .buttonStyle(.borderedProminent)
+                        Button() { viewModel.pause() }
+                        label: {
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color.blue)
+                                .frame(width: 100, height: 60)
+                                .overlay(
+                                    Text("Pause")
+                                        .font(.system(size: 26, weight: .bold))
+                                        .foregroundColor(.white))
+                        }
                     } else {
-                        Button(viewModel.isFinished ? "Restart" : "Start") {
+                        Button() {
                             if viewModel.isFinished {
                                 viewModel.reset()
                             } else {
                                 viewModel.start()
                             }
+                        } label: {
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color.green)
+                                .frame(width: 100, height: 60)
+                                .overlay(
+                                    Text(viewModel.isFinished ? "Finish" : "Start")
+                                        .font(.system(size: 26, weight: .bold))
+                                        .foregroundColor(.white))
                         }
-                        .buttonStyle(.borderedProminent)
                     }
-                }
             }
         }
         .padding()

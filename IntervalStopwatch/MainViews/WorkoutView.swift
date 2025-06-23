@@ -4,6 +4,11 @@
 //
 //  Created by Alun King on 24/02/2025.
 //
+// MARK: Huw: 23 June 2025
+//       added a fade in/out to the "Start Workout" using opacity.
+                                                //   Line 123
+                                                //   Line 20
+                                                //   Line 65
 
 import SwiftUI
 import WorkoutKit
@@ -13,6 +18,10 @@ struct WorkoutView: View {
     @ObservedObject var workout: Workout
     @State var dismissBool:Bool = false
     @State var isWorkoutPreviewVisible = false
+    
+    // makes the "Start Workout" text fade in and out.
+    @State private var isFaded = false
+
     //create a blank workout
     @State private var editingWorkout = Workout(name: "")
     @State private var isPresentingEditWorkoutView = false
@@ -49,12 +58,15 @@ struct WorkoutView: View {
                     if(workout.activitySets.count == 0){
                         Text("Click edit to add workout sets").font(.subheadline)
                     }else{
-                        NavigationLink{
-                            WorkoutTimerView(viewModel: WorkoutTimer(workout:workout))
-                        }label:{
-                            Text("Start Workout")
+                        VStack {
+                            NavigationLink{
+                                WorkoutTimerView(viewModel: WorkoutTimer(workout:workout))
+                            }label:{
+                                Text("Start Workout")
+                                    .opacity(isFaded ? 0.2 : 1.0)
+                            }
+                            .font(.headline)
                         }
-                        .font(.headline)
                         Button("Preview in WorkoutKit", systemImage: "stopwatch"){
                             //Navigate to workout screen here
                             workout.plan =  WorkoutPlan(.custom(workout.exportToWorkoutKit()))
@@ -83,7 +95,8 @@ struct WorkoutView: View {
             
         }
             
-        }.workoutPreview(workout.plan, isPresented: $isWorkoutPreviewVisible).sheet(isPresented: $isPresentingEditWorkoutView){
+        }
+        .workoutPreview(workout.plan, isPresented: $isWorkoutPreviewVisible).sheet(isPresented: $isPresentingEditWorkoutView){
             NavigationStack{
                 WorkoutEditView(workout:editingWorkout, originalWorkout:workout, deletedWorkout:$dismissBool)
                     .toolbar{
@@ -109,6 +122,14 @@ struct WorkoutView: View {
         }.onAppear{
             //set up the callbacks so we are notified of any edits
             workout.bindChildren()
+            
+            // 3 seconds then fade in and out animation.
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
+                    isFaded = true
+                }
+            }
         }
 
     }
