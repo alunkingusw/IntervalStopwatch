@@ -48,3 +48,43 @@ struct ActivityArc: Shape {
         return path
     }
 }
+
+// A reusable ring component to visually represent progress towards a goal
+struct ActivityRing: View {
+    // Binding to the current value (e.g., amount of water or calories)
+    @Binding var activitiesCompleted: Int
+    var totalActivities: Int
+
+    // Width of the ring stroke
+    let width: CGFloat
+    
+    var body: some View {
+        ZStack {
+            ZStack {
+                
+                // Background ring (static, low opacity)
+                Circle()
+                    .stroke(.green.opacity(0.3), lineWidth: width)
+                
+                // Foreground ring showing actual progress
+                Circle()
+                    .trim(from: 0, to: CGFloat(activitiesCompleted) / CGFloat(totalActivities))
+                    .stroke(.green, style: StrokeStyle(lineWidth: width, lineCap: .round))
+                    .rotationEffect(Angle(degrees: -90)) // Start progress from the top
+                    .shadow(radius: 6) // Adds depth
+                    .animation(.easeOut(duration: 0.8), value: activitiesCompleted)
+            }
+            .onChange(of: totalActivities) {
+                
+            }
+            
+        }
+        
+    }
+}
+
+#Preview {
+    // Preview with constant sample data
+    ActivityRing(activitiesCompleted: .constant(100), totalActivities: 200, width: 30)
+}
+

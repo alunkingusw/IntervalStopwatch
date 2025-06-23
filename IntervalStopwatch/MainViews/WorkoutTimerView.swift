@@ -28,8 +28,12 @@ struct WorkoutTimerView: View {
                     .font(.headline)
                     .foregroundColor(.secondary)
                 
-                Circle()
-                    .strokeBorder(lineWidth: 24)
+
+                // The ring adds the first part of the ring to accommodate the fact that it does not complete on
+                // the last activity.
+                // We could bind a bool to the ring so when the start button is pressed, the +x is added to
+                // the ring.
+                ActivityRing(activitiesCompleted: $viewModel.currentActivityIndex, totalActivities: viewModel.currentSet?.activities.count ?? 0, width: 40)
                     .overlay {
                         VStack {
                             Text(viewModel.currentActivity?.name ?? "No Activity")
@@ -43,16 +47,12 @@ struct WorkoutTimerView: View {
                         }
                         .accessibilityElement(children: .combine)
                     }
-                    .overlay  {
-                        ActivityArc(activityIndex: viewModel.currentActivityIndex, totalActivities: viewModel.currentSet?.activities.count ?? 0)
-                                .rotation(Angle(degrees: -90))//ensures circle starts at the top
-                                .stroke(style: StrokeStyle(lineWidth: 12, lineCap: .round)).foregroundStyle(.green)
-                    }
-                    .padding(.horizontal)
+                    .padding()
                 RepDotIndicator(currentRep: viewModel.currentRep - 1, totalReps: Int(viewModel.currentSet?.reps ?? 0))
 
 
                 Text("Set \(viewModel.currentSetIndex + 1) of \(viewModel.workout.activitySets.count)")
+                    .font(.title2)
                 
 
                     if viewModel.isRunning {
