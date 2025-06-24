@@ -49,10 +49,11 @@ struct ActivityArc: Shape {
     }
 }
 
-// A reusable ring component to visually represent progress towards a goal
+// A reusable ring component to visually represent progress towards completion of the rep
 struct ActivityRing: View {
-    // Binding to the current value (e.g., amount of water or calories)
+    // counting the activities completed (eg. rep)
     @Binding var activitiesCompleted: Int
+    // the total reps to complete
     var totalActivities: Int
 
     // Width of the ring stroke
@@ -70,16 +71,11 @@ struct ActivityRing: View {
                 Circle()
                     .trim(from: 0, to: CGFloat(activitiesCompleted) / CGFloat(totalActivities))
                     .stroke(.green, style: StrokeStyle(lineWidth: width, lineCap: .round))
-                    .rotationEffect(Angle(degrees: -90)) // Start progress from the top
+                    .rotationEffect(Angle(degrees: 90)) // Start progress from the top use -90
                     .shadow(radius: 6) // Adds depth
-                    .animation(.easeOut(duration: 0.8), value: activitiesCompleted)
+                    .animation(.easeOut(duration: 0.8), value: activitiesCompleted) // how long the amination will take in seconds. This could be a variable that is passed and can be the duration of the workout.
             }
-            .onChange(of: totalActivities) {
-                
-            }
-            
         }
-        
     }
 }
 
