@@ -4,7 +4,8 @@
 //
 //  Created by Alun King on 11/05/2025.
 // This view shows the timer at the top for the workout.
-// MARK: Huw: bigger start stop button
+// MARK: Huw: bigger start stop button: Line 70
+//            Stops screen from sleeping during workout: Line 90
 
 import SwiftUI
 
@@ -86,10 +87,16 @@ struct WorkoutTimerView: View {
             }
         }
         .padding()
+        .onAppear {
+            // stop the screen from sleeping durng workout.
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
         .onDisappear {
             //MARK: change by Huw
             // stops the timer as it will continue to run in the background
             viewModel.pause()
+            // enables the screen sleep mode again.
+            UIApplication.shared.isIdleTimerDisabled = false
         }
     }
 
