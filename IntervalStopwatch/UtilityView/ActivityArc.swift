@@ -55,7 +55,6 @@ struct ActivityRing: View {
     @Binding var activitiesCompleted: Int
     // the total reps to complete
     var currentSet: ActivitySet
-    
     @Binding var timeRemaining:Int
     // Width of the ring stroke
     let width: CGFloat
@@ -67,14 +66,34 @@ struct ActivityRing: View {
                 // Background ring (static, low opacity)
                 Circle()
                     .stroke(.green.opacity(0.3), lineWidth: width)
-                
-                // Foreground ring showing actual progress
+                //draw a segment for the activity in the set
+                ForEach(Array(zip(currentSet.sortedActivities.indices, currentSet.sortedActivities)), id: \.0) { index, activity in
+                    
+                    if index <= activitiesCompleted{
+                        
+                        Circle()
+                            .trim(from: CGFloat(index)/CGFloat(currentSet.activities.count),
+                                  to: CGFloat(index+1)/CGFloat(currentSet.activities.count))
+                            .stroke(
+                                Color.gray,
+                                style: StrokeStyle(lineWidth: width, lineCap: .round)
+                            )
+                        
+                    }
+                }
+                /* Foreground ring showing actual progress, changing every second*/
+                let currentActivity = currentSet.sortedActivities[activitiesCompleted]
+                let percentage = CGFloat(currentActivity.duration-timeRemaining) / (CGFloat(currentActivity.duration))
+                let start = (CGFloat(activitiesCompleted-1) / CGFloat(currentSet.activities.count))
+                let end = CGFloat(activitiesCompleted) / CGFloat(currentSet.activities.count)
+                let segmentSize = end - start
                 Circle()
-                    .trim(from: 0, to: CGFloat(activitiesCompleted) / CGFloat(currentSet.activities.count))
+                    .trim(from: start+(percentage*segmentSize), to: end)
                     .stroke(.green, style: StrokeStyle(lineWidth: width, lineCap: .round))
                     .rotationEffect(Angle(degrees: 90)) // Start progress from the top use -90
                     .shadow(radius: 6) // Adds depth
                     .animation(.easeOut(duration: 0.8), value: activitiesCompleted) // how long the amination will take in seconds. This could be a variable that is passed and can be the duration of the workout.
+                 
             }
         }
     }
@@ -82,6 +101,6 @@ struct ActivityRing: View {
 
 #Preview {
     // Preview with constant sample data
-    ActivityRing(activitiesCompleted: .constant(100), currentSet: ActivitySet.sampleData, timeRemaining:.constant(20), width:40)
+    ActivityRing(activitiesCompleted: .constant(1), currentSet: ActivitySet.sampleData, timeRemaining:.constant(20), width:40)
 }
 
