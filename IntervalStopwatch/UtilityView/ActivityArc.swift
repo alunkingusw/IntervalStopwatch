@@ -48,3 +48,39 @@ struct ActivityArc: Shape {
         return path
     }
 }
+
+// A reusable ring component to visually represent progress towards completion of the rep
+struct ActivityRing: View {
+    // counting the activities completed (eg. rep)
+    @Binding var activitiesCompleted: Int
+    // the total reps to complete
+    var totalActivities: Int
+
+    // Width of the ring stroke
+    let width: CGFloat
+    
+    var body: some View {
+        ZStack {
+            ZStack {
+                
+                // Background ring (static, low opacity)
+                Circle()
+                    .stroke(.green.opacity(0.3), lineWidth: width)
+                
+                // Foreground ring showing actual progress
+                Circle()
+                    .trim(from: 0, to: CGFloat(activitiesCompleted) / CGFloat(totalActivities))
+                    .stroke(.green, style: StrokeStyle(lineWidth: width, lineCap: .round))
+                    .rotationEffect(Angle(degrees: 90)) // Start progress from the top use -90
+                    .shadow(radius: 6) // Adds depth
+                    .animation(.easeOut(duration: 0.8), value: activitiesCompleted) // how long the amination will take in seconds. This could be a variable that is passed and can be the duration of the workout.
+            }
+        }
+    }
+}
+
+#Preview {
+    // Preview with constant sample data
+    ActivityRing(activitiesCompleted: .constant(100), totalActivities: 200, width: 30)
+}
+
