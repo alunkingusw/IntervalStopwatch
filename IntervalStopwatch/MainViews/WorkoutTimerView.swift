@@ -34,7 +34,7 @@ struct WorkoutTimerView: View {
                 // the last activity.
                 // We could bind a bool to the ring so when the start button is pressed, the +x is added to
                 // the ring.
-                ActivityRing(activitiesCompleted: $viewModel.currentActivityIndex, totalActivities: viewModel.currentSet?.activities.count ?? 0, width: 40)
+                ActivityRing(activitiesCompleted: $viewModel.currentActivityIndex, currentSet: viewModel.currentSet ?? ActivitySet(), timeRemaining:$viewModel.timeRemaining, width: 40)
                     .overlay {
                         VStack {
                             Text(viewModel.currentActivity?.name ?? "No Activity")

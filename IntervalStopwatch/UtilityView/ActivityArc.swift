@@ -54,8 +54,9 @@ struct ActivityRing: View {
     // counting the activities completed (eg. rep)
     @Binding var activitiesCompleted: Int
     // the total reps to complete
-    var totalActivities: Int
-
+    var currentSet: ActivitySet
+    
+    @Binding var timeRemaining:Int
     // Width of the ring stroke
     let width: CGFloat
     
@@ -69,7 +70,7 @@ struct ActivityRing: View {
                 
                 // Foreground ring showing actual progress
                 Circle()
-                    .trim(from: 0, to: CGFloat(activitiesCompleted) / CGFloat(totalActivities))
+                    .trim(from: 0, to: CGFloat(activitiesCompleted) / CGFloat(currentSet.activities.count))
                     .stroke(.green, style: StrokeStyle(lineWidth: width, lineCap: .round))
                     .rotationEffect(Angle(degrees: 90)) // Start progress from the top use -90
                     .shadow(radius: 6) // Adds depth
@@ -81,6 +82,6 @@ struct ActivityRing: View {
 
 #Preview {
     // Preview with constant sample data
-    ActivityRing(activitiesCompleted: .constant(100), totalActivities: 200, width: 30)
+    ActivityRing(activitiesCompleted: .constant(100), currentSet: ActivitySet.sampleData, timeRemaining:.constant(20), width:40)
 }
 
