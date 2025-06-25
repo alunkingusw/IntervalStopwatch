@@ -94,7 +94,7 @@ struct ActivityRing: View {
                     .shadow(radius: 6) // Adds depth
                     .animation(.easeOut(duration: 0.8), value: activitiesCompleted) // how long the amination will take in seconds. This could be a variable that is passed and can be the duration of the workout.
                  
-            }
+            }.rotationEffect(Angle(degrees:-90))
         }
     }
 }
