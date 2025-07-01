@@ -11,7 +11,7 @@ struct ActivitySegmentArcView: View {
     var activitySet: ActivitySet
     var currentActivityIndex: Int
     var thickness: CGFloat
-    let gapDegrees: Double = 2.0
+    let gapDegrees: Double = 1
     private let degreesPerSecond: Double
     init(activitySet: ActivitySet, currentActivityIndex: Int, thickness: CGFloat) {
             self.activitySet = activitySet
@@ -31,17 +31,17 @@ struct ActivitySegmentArcView: View {
                     thickness: thickness
                 )
                 .stroke(style: StrokeStyle(lineWidth: thickness))
-                .foregroundColor(activity.type == ActivityType.rest.rawValue ? .red: .blue).opacity(index <= currentActivityIndex ? 1 : 0.3)
+                .foregroundColor(activity.type == ActivityType.rest.rawValue ? .orange: .cyan).opacity(index <= currentActivityIndex ? 1 : 0.3)
             }
         }
     }
     
     private func segmentStart(_ index: Int) -> Double {
-        return (degreesPerSecond * Double(activitySet.elapsedTime(upTo: index) + Int(gapDegrees)/2))
+        return (degreesPerSecond * (Double(activitySet.elapsedTime(upTo: index)) + gapDegrees/2))
     }
     
     private func segmentEnd(_ index: Int) -> Double {
-        return (degreesPerSecond * Double(activitySet.elapsedTime(upTo: index+1) + Int(gapDegrees)/2))
+        return (degreesPerSecond * (Double(activitySet.elapsedTime(upTo: index+1)) - gapDegrees/2))
     }
 }
 struct SegmentArcShape: Shape {
@@ -123,7 +123,7 @@ struct ActivityArcView: View {
             // Inner timer arc
             ActivityProgressArc(progress: progress, insetBy:segmentThickness, thickness: timerThickness)
                 .foregroundColor(.green)
-        }
+        }.rotationEffect(Angle(degrees: -90))
     }
 }
 
