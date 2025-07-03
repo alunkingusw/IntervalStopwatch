@@ -12,15 +12,26 @@ struct ActivitySegmentArcView: View {
     var currentActivityIndex: Int
     var thickness: CGFloat
     let gapDegrees: Double = 1
+    let manualTime: Int //length of manual activity to make up correct proportion
     private let degreesPerSecond: Double
     init(activitySet: ActivitySet, currentActivityIndex: Int, thickness: CGFloat) {
-            self.activitySet = activitySet
-            self.currentActivityIndex = currentActivityIndex
-            self.thickness = thickness
-
-            let total = activitySet.totalAdjustedDuration(manualDuration: 5)
-            self.degreesPerSecond = total > 0 ? 360.0 / Double(total) : 0
+        self.activitySet = activitySet
+        self.currentActivityIndex = currentActivityIndex
+        self.thickness = thickness
+        //work out the total time without manual activities
+        let totalWithoutManual = activitySet.totalAdjustedDuration(manualDuration: 0)
+        let manualCount =
+        activitySet.totalManualActivities()
+        if(manualCount > 0){
+            let timedProportion:Double = 1 - (Double(activitySet.totalManualActivities())/Double(activitySet.activities.count))
+            let virtualTotal = Int(Double(totalWithoutManual)/timedProportion)
+            self.degreesPerSecond = virtualTotal > 0 ? 360.0 / Double(virtualTotal) : 0
+            self.manualTime =  (virtualTotal-totalWithoutManual) / activitySet.totalManualActivities()
+        }else{
+            self.degreesPerSecond = totalWithoutManual > 0 ? 360.0 / Double(totalWithoutManual) : 0
+            self.manualTime = 0
         }
+    }
     var body: some View {
         ZStack {
             ForEach(0..<activitySet.sortedActivities.count, id: \.self) { index in
@@ -37,11 +48,11 @@ struct ActivitySegmentArcView: View {
     }
     
     private func segmentStart(_ index: Int) -> Double {
-        return (degreesPerSecond * (Double(activitySet.elapsedTime(upTo: index)) + gapDegrees/2))
+        return (degreesPerSecond * (Double(activitySet.elapsedTime(upTo: index, manualDuration: manualTime)) + gapDegrees/2))
     }
     
     private func segmentEnd(_ index: Int) -> Double {
-        return (degreesPerSecond * (Double(activitySet.elapsedTime(upTo: index+1)) - gapDegrees/2))
+        return (degreesPerSecond * (Double(activitySet.elapsedTime(upTo: index+1, manualDuration: manualTime)) - gapDegrees/2))
     }
 }
 struct SegmentArcShape: Shape {
@@ -97,8 +108,8 @@ struct ActivityArcView: View {
     @Binding var timeRemaining: Int
     
 
-    let segmentThickness: CGFloat = 16
-    let timerThickness: CGFloat = 10
+    let segmentThickness: CGFloat = 20
+    let timerThickness: CGFloat = 20
 
     var currentActivityDuration: Int {
         let activity = activitySet.sortedActivities[currentActivityIndex]
@@ -121,7 +132,7 @@ struct ActivityArcView: View {
             .foregroundStyle(.clear) // background fill
 
             // Inner timer arc
-            ActivityProgressArc(progress: progress, insetBy:segmentThickness, thickness: timerThickness)
+            ActivityProgressArc(progress: progress, insetBy:segmentThickness+5, thickness: timerThickness)
                 .foregroundColor(.green)
         }.rotationEffect(Angle(degrees: -90))
     }
@@ -136,53 +147,7 @@ struct ActivityArcView: View {
 
 
 
-// A reusable ring component to visually represent progress towards completion of the rep
-struct ActivityRing: View {
-    // counting the activities completed (eg. rep)
-    @Binding var activitiesCompleted: Int
-    // the total reps to complete
-    var currentSet: ActivitySet
-    @Binding var timeRemaining:Int
-    // Width of the ring stroke
-    let width: CGFloat
-    
-    var body: some View {
-        ZStack {
-            ZStack {
-                let currentActivity = currentSet.sortedActivities[activitiesCompleted]
-                let percentage = CGFloat(currentActivity.duration-timeRemaining) / (CGFloat(currentActivity.duration))
-                let start = (CGFloat(activitiesCompleted-1) / CGFloat(currentSet.activities.count))
-                // Background ring (static, low opacity)
-                Circle()
-                    .stroke(.green.opacity(0.3), lineWidth: width)
-                //draw a segment for the activity in the set
-                ForEach(Array(zip(currentSet.sortedActivities.indices, currentSet.sortedActivities)), id: \.0) { index, activity in
-                    
-                    if index <= activitiesCompleted{
-                        
-                        Circle()
-                            .trim(from: CGFloat(index)/CGFloat(currentSet.activities.count),
-                                  to: CGFloat(index+1)/CGFloat(currentSet.activities.count))
-                            .stroke(
-                                Color.gray,
-                                style: StrokeStyle(lineWidth: width, lineCap: .round)
-                            )
-                        
-                    }
-                }.overlay{
-                    /* Inner ring showing actual progress, changing every second*/
-                    
-                    Circle()
-                        .trim(from: 0, to: percentage)
-                        .stroke(.green, style: StrokeStyle(lineWidth: width-10, lineCap: .round))
-                        .rotationEffect(Angle(degrees: 0)) // Start progress from the top use -90
-                    // Adds depth
-                        .animation(.easeOut(duration: 0.8), value: activitiesCompleted) // how long the amination will take in seconds. This could be a variable that is passed and can be the duration of the workout.
-                }
-            }
-        }.rotationEffect(Angle(degrees:-90))
-    }
-}
+
 
 
 extension ActivitySet {
@@ -200,9 +165,16 @@ extension ActivitySet {
         }
     }
     
+    //returns the total time of the activities, accounting for the manual duration being 5 seconds.
     func totalAdjustedDuration(manualDuration: Int = 5) -> Int {
             sortedActivities.reduce(0) { total, activity in
                 total + (activity.duration == -1 ? manualDuration : activity.duration)
             }
+        }
+    
+    //calculate the percentage of manual activities to help draw the correct sized ring
+    func totalManualActivities() -> Int {
+            let manualCount = activities.filter { $0.duration == -1 }.count
+            return manualCount
         }
 }

@@ -152,6 +152,7 @@ extension ActivitySet{
         activities:[
             Activity(name:"Push ups", type:ActivityType.work.rawValue, duration:40),
             Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:50),
+            Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:-1),
             Activity(name:"Sit ups", type:ActivityType.work.rawValue, duration:60),
             Activity(name:"Rest", type:ActivityType.rest.rawValue, duration:70),
         ])
