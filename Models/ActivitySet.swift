@@ -7,6 +7,7 @@
 import SwiftData
 import Foundation
 import WorkoutKit
+import SwiftUI
 
 @Model
 class ActivitySet:Identifiable, ObservableObject{
@@ -103,7 +104,6 @@ class ActivitySet:Identifiable, ObservableObject{
         }
         return IntervalBlock(steps: steps, iterations:Int(self.reps))
     }
-    
     
 }
 
