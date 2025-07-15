@@ -130,10 +130,11 @@ struct ActivityArcView: View {
                 thickness: segmentThickness
             )
             .foregroundStyle(.clear) // background fill
-
-            // Inner timer arc
-            ActivityProgressArc(progress: progress, insetBy:segmentThickness+5, thickness: timerThickness)
-                .foregroundColor(.green)
+            if(activitySet.sortedActivities[currentActivityIndex].duration != -1){
+                // Inner timer arc
+                ActivityProgressArc(progress: progress, insetBy:segmentThickness+5, thickness: timerThickness)
+                    .foregroundColor(.green)
+            }
         }.rotationEffect(Angle(degrees: -90))
     }
 }
