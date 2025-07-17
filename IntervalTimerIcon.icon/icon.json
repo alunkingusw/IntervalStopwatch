@@ -1,0 +1,106 @@
+{
+  "fill" : {
+    "automatic-gradient" : "extended-srgb:0.00000,0.47843,1.00000,1.00000"
+  },
+  "groups" : [
+    {
+      "hidden" : false,
+      "layers" : [
+        {
+          "fill-specializations" : [
+            {
+              "appearance" : "dark",
+              "value" : {
+                "solid" : "extended-gray:0.75000,1.00000"
+              }
+            },
+            {
+              "appearance" : "tinted",
+              "value" : {
+                "solid" : "extended-gray:0.75000,1.00000"
+              }
+            }
+          ],
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "IntervalTimerIcon.fw.png",
+          "name" : "IntervalTimerIcon.fw",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -5.28125,
+              -38.5859375
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "hidden" : false,
+      "layers" : [
+        {
+          "glass" : true,
+          "image-name" : "4IntervalTimerIcon.fw.png",
+          "name" : "4IntervalTimerIcon.fw",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -5.28125,
+              -38.5859375
+            ]
+          }
+        },
+        {
+          "hidden" : false,
+          "image-name" : "3IntervalTimerIcon.fw.png",
+          "name" : "3IntervalTimerIcon.fw",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -5.28125,
+              -38.5859375
+            ]
+          }
+        },
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "2IntervalTimerIcon.fw.png",
+          "name" : "2IntervalTimerIcon.fw",
+          "opacity" : 0.7,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -5.28125,
+              -38.5859375
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : [
+      "iOS"
+    ]
+  }
+}
