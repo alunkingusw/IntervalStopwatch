@@ -17,7 +17,7 @@ struct RepDotIndicator: View {
                     // Black background dot
                     Circle()
                         .frame(width: 12, height: 12)
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
 
                     // Green foreground dot for completed + current reps
                     if index <= currentRep {

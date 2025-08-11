@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "863d53f1-e977-4ef6-8e1d-bb13a14765b8 copy.jpg",
+      "filename" : "IntervalTimerIcon-iOS-Default-1024x1024@2x.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,6 +13,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "IntervalTimerIcon-iOS-Dark-1024x1024@2x.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -24,6 +25,7 @@
           "value" : "tinted"
         }
       ],
+      "filename" : "IntervalTimerIcon-macOS-ClearLight-1024x1024@2x.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
