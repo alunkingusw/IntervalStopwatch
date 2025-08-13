@@ -4,14 +4,12 @@
 //
 //  Created by Alun King on 11/05/2025.
 // This view shows the timer at the top for the workout.
-// MARK: Huw: bigger start stop button: Line 70
-//            Stops screen from sleeping during workout: Line 90
 
 import SwiftUI
 
 struct WorkoutTimerView: View {
     @StateObject var viewModel: WorkoutTimer
-
+    
     var body: some View {
         VStack(spacing: 20) {
             if viewModel.isFinished {
@@ -21,15 +19,13 @@ struct WorkoutTimerView: View {
             } else {
                 Text(viewModel.currentActivity?.activityDescription ?? "")
                     .font(.subheadline)
-
+                
                 Text(viewModel.currentActivity?.type ?? "")
                     .font(.headline)
                     .foregroundColor(.secondary)
                 
-
-                // The ring adds the first part of the ring to accommodate the fact that it does not complete on
-                // the last activity.
-                // We could bind a bool to the ring so when the start button is pressed, the +x is added to
+                
+                
                 // the ring.
                 ActivityArcView( activitySet: viewModel.currentSet ?? ActivitySet(), currentActivityIndex: $viewModel.currentActivityIndex, timeRemaining:$viewModel.timeRemaining)
                     .overlay {
@@ -47,40 +43,40 @@ struct WorkoutTimerView: View {
                     }
                     .padding()
                 RepDotIndicator(currentRep: viewModel.currentRep - 1, totalReps: Int(viewModel.currentSet?.reps ?? 0))
-
-
+                
+                
                 Text("Set \(viewModel.currentSetIndex + 1) of \(viewModel.workout.activitySets.count)")
                     .font(.title2)
                 
-                    // changes the start/pause button
-                    if viewModel.isRunning {
-                        Button() { viewModel.pause() }
-                        label: {
-                            RoundedRectangle(cornerRadius: 14)
-                                .fill(Color.blue)
-                                .frame(width: 100, height: 60)
-                                .overlay(
-                                    Text("Pause")
-                                        .font(.system(size: 26, weight: .bold))
-                                        .foregroundColor(.white))
-                        }
-                    } else {
-                        Button() {
-                            if viewModel.isFinished {
-                                viewModel.reset()
-                            } else {
-                                viewModel.start()
-                            }
-                        } label: {
-                            RoundedRectangle(cornerRadius: 14)
-                                .fill(Color.green)
-                                .frame(width: 100, height: 60)
-                                .overlay(
-                                    Text(viewModel.isFinished ? "Finish" : "Start")
-                                        .font(.system(size: 26, weight: .bold))
-                                        .foregroundColor(.white))
-                        }
+                // changes the start/pause button
+                if viewModel.isRunning {
+                    Button() { viewModel.pause() }
+                    label: {
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(Color.blue)
+                            .frame(width: 100, height: 60)
+                            .overlay(
+                                Text("Pause")
+                                    .font(.system(size: 26, weight: .bold))
+                                    .foregroundColor(.white))
                     }
+                } else {
+                    Button() {
+                        if viewModel.isFinished {
+                            viewModel.reset()
+                        } else {
+                            viewModel.start()
+                        }
+                    } label: {
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(Color.green)
+                            .frame(width: 100, height: 60)
+                            .overlay(
+                                Text(viewModel.isFinished ? "Finish" : "Start")
+                                    .font(.system(size: 26, weight: .bold))
+                                    .foregroundColor(.white))
+                    }
+                }
             }
         }
         .padding()
@@ -96,7 +92,7 @@ struct WorkoutTimerView: View {
             UIApplication.shared.isIdleTimerDisabled = false
         }
     }
-
+    
     func timeString(from seconds: Int) -> String {
         let minutes = seconds / 60
         let remainingSeconds = seconds % 60

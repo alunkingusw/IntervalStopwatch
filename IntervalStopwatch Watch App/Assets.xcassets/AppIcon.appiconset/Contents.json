@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "IntervalTimerIcon-watchOS-Default-1024x1024@2x.png",
+      "filename" : "CWIcon.png",
       "idiom" : "universal",
       "platform" : "watchos",
       "size" : "1024x1024"
