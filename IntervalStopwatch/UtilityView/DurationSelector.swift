@@ -27,6 +27,9 @@ struct DurationSelector: View {
                 }}.pickerStyle(.menu).onChange(of:timingType){
                     if timingType==TimingOptions.manual{
                         seconds = -1
+                    }else{
+                        //set seconds to a default value
+                        seconds = totalInSeconds
                     }
                 }
             if(!(timingType==TimingOptions.manual)){
