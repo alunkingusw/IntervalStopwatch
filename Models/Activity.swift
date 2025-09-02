@@ -10,8 +10,12 @@ import SwiftData
 import WorkoutKit
 
 
+/// This is the basic activity class, where the actual activity within a workout is defined.
+/// For example, we may want the user to do push ups, or sit ups, or rest and recover.
+/// We define these actions here and either assign a specific time, or set it to manual
+/// For manual, the user has the option of advancing to the next activity when they are ready.
 @Model
-class Activity:Identifiable, ObservableObject{
+class Activity:Identifiable, ObservableObject, Codable{
     var id=UUID()
     var name:String
     var activityDescription:String
@@ -27,6 +31,16 @@ class Activity:Identifiable, ObservableObject{
     
     var formattedTime:String = ""
     
+    
+    /// The coding keys are used to encode to JSON which we need for the QR code sharing.
+    enum CodingKeys:String, CodingKey{
+        case name
+        case activityDescription
+        case type
+        case sortIndex
+        case duration
+    }
+    
     init(
         name: String="Work",
         activityDescription: String = "",
@@ -40,6 +54,34 @@ class Activity:Identifiable, ObservableObject{
         self.duration = duration
         self.sortIndex = sortIndex
         self.formattedTime = Workout.formatDuration(for: duration)
+    }
+    
+    
+    /// This is the manually defined decoder for JSON. The class does not automatically conform to codable
+    /// because it is observable, so we define the decode (and encode, below) ourselves.
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.activityDescription = try container.decode(String.self, forKey: .activityDescription)
+        self.type = try container.decode(String.self, forKey: .type)
+        self.sortIndex = try container.decode(Int.self, forKey: .sortIndex)
+        self.duration = try container.decode(Int.self, forKey: .duration)
+                
+        // Derived value
+        self.formattedTime = Workout.formatDuration(for: duration)
+                
+        // Transient stays nil
+        self.parentActivitySet = nil
+    }
+    
+    /// See above comment on decode.. this func is used to manually encode to JSON.
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        try container.encode(activityDescription, forKey: .activityDescription)
+        try container.encode(type, forKey: .type)
+        try container.encode(sortIndex, forKey: .sortIndex)
+        try container.encode(duration, forKey: .duration)
     }
     
     func save(editedActivity:Activity){

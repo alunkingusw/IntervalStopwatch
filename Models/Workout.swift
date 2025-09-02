@@ -10,8 +10,10 @@ import SwiftUI
 import WorkoutKit
 import HealthKit
 
+/// This is the parent class for ActivitySet - the workout is the top level that contains a series (or just one) ActivitySets
+///
 @Model
-class Workout:Identifiable, ObservableObject{
+class Workout:Identifiable, ObservableObject, Codable{
     var id=UUID()
     var name:String
     var workoutDescription:String
@@ -28,6 +30,14 @@ class Workout:Identifiable, ObservableObject{
     
     @Transient var plan:WorkoutPlan = WorkoutPlan(.custom(Workout.createSimpleWorkout()))
     
+    ///The CodingKeys are used to encode the workout to JSON so that the workouts can be shared.
+    enum CodingKeys: String, CodingKey {
+        case name
+        case workoutDescription
+        case type
+        case activitySets
+    }
+    
     init(
         name: String = "Workout",
         workoutDescription: String = "",
@@ -39,6 +49,33 @@ class Workout:Identifiable, ObservableObject{
         self.type = type
         self.activitySets = activitySets
         self.calculateWorkoutDuration()
+    }
+    
+    ///The decoder is manually defined because Observable prevents Codable from working automatically.
+    ///We use this to decode our workouts from JSON which then allows us to share the workouts with others
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.name = try container.decode(String.self, forKey: .name)
+        self.workoutDescription = try container.decode(String.self, forKey: .workoutDescription)
+        self.type = try container.decode(String.self, forKey: .type)
+        self.activitySets = try container.decode([ActivitySet].self, forKey: .activitySets)
+                
+        // Recompute derived values
+        self.calculateWorkoutDuration()
+        
+        // Rebind relationships which are used to update the duration if we edit a child property.
+        self.bindChildren()
+    }
+    
+    ///This is the manual encode which allows us to encode the workout to JSON for sharing with others via QR code
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(name, forKey: .name)
+        try container.encode(workoutDescription, forKey: .workoutDescription)
+        try container.encode(type, forKey: .type)
+        try container.encode(activitySets, forKey: .activitySets)
     }
     
     /*
@@ -93,7 +130,9 @@ class Workout:Identifiable, ObservableObject{
     
     @Transient static func formatDuration(for duration:Int) -> String{
         var returnVal: String = ""
-        
+        if duration < 0{
+            return "manual"
+        }
         if duration > 3600 {
             let hours = (Int(duration / 3600))
             returnVal += ("\(hours):")
