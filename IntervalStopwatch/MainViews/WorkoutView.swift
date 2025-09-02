@@ -74,7 +74,11 @@ struct WorkoutView: View {
                             isWorkoutPreviewVisible = true
                         }
                         .font(.headline)
-                        
+                        NavigationLink{
+                            WorkoutQRView(workout: workout)
+                        }label:
+                        {Text("Share with others")
+                        }.font(.headline)
                     }
                 }
                 
